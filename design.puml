@@ -1,0 +1,45 @@
+@startuml
+!include https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml
+!include <C4/C4_Container.puml>
+Person(user, "User")
+
+System_Boundary(movie_service, "Movie Service") {
+    Container(async_api, "Async API", "Python, FastAPI")
+    ContainerDb(movie_db, "DB", "ElasticSearch")
+}
+
+System_Boundary(voice_rd, "BOB") {
+    Container(recorder, "Voice Recorder", "Python")
+    Container(decoder, "Voice Decoder", "Python")
+    Container(encoder, "Voice Encoder", "Python")
+}
+
+System_Boundary(voice_assistent, "Voice Assistent") {
+    Container(assistent_api, "Assistent API", "Python, FastAPI")
+}
+
+System_Boundary(alice_skill, "Alice skill") {
+    Container(skill, "alice skill", "API")
+}
+
+
+Rel(user, recorder, "Voice question")
+Rel(user, skill, "Voice question")
+
+Rel(recorder, decoder, "[.wav]")
+
+Rel(decoder, assistent_api, "Command", "json")
+Rel(skill, assistent_api, "Command", "json")
+
+Rel_L(assistent_api, async_api, "Command", "json")
+Rel_R(async_api, assistent_api, "Answer", "json")
+
+Rel(async_api, movie_db, "Responce")
+Rel(movie_db, async_api, "Answer")
+
+Rel_L(assistent_api, encoder, "Answer", "json")
+Rel_L(assistent_api, skill, "Answer", "json")
+
+Rel_L(encoder, user, "Voice Answer")
+Rel_L(skill, user, "Voice answer")
+@enduml
