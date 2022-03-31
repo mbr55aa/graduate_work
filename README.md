@@ -1,5 +1,5 @@
 # Техническое Задание
-[ссылка](https://docs.google.com/document/d/1TBbOgtxxFOSANF7Od0uXKds1nT56b6RrfJuaCQw-IpU/edit#heading=h.6myqw9ap9tg1)
+[ссылка](https://docs.google.com/document/d/1TBbOgtxxFOSANF7Od0uXKds1nT56b6RrfJuaCQw-IpU)
 
 # Настройка
 
