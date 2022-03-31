@@ -1,8 +1,11 @@
+# Техническое Задание
+[ссылка](https://docs.google.com/document/d/1TBbOgtxxFOSANF7Od0uXKds1nT56b6RrfJuaCQw-IpU/edit#heading=h.6myqw9ap9tg1)
+
 # Настройка
 
 ## Настройка Postgres
 - Настройка переменных окружения. Создайте файл db.env, и укажите в неё значения: POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD (в качестве примера можно взять файл db.env.example)
-- Добавление файлов БД. Создайте в корне проекта папку pgdata, и поместите туда файлы БД (можно использовать вот эти https://drive.google.com/file/d/1INh4uMXfcJfNXhisvVBWrJ_kDNxFoziT/view?usp=sharing)
+- Добавление файлов БД. Создайте в корне проекта папку pgdata, и поместите туда файлы БД (можно использовать вот [эти](https://drive.google.com/file/d/1INh4uMXfcJfNXhisvVBWrJ_kDNxFoziT/view?usp=sharing))
 - 
 ## Настройка Django
 - Настройка переменных окружения. Создайте файл movies_admin/.env, и укажите в неё значения: SECRET_KEY, ALLOWED_HOSTS, DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT (в качестве примера можно взять файл movies_admin/.env.example)
