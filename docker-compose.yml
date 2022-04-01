@@ -5,7 +5,7 @@ services:
     image: postgres:13-alpine
     container_name: postgres_movies
     env_file:
-      - db.env
+      - ./config/db.env
     volumes:
       - ./pgdata:/var/lib/postgresql/data
 #    ports:
@@ -87,7 +87,7 @@ services:
       dockerfile: Dockerfile
     container_name: fast_api_movies
     env_file:
-      - fa.env
+      - ./config/fa.env
     volumes:
       - ./fast_api:/fast_api:ro
     networks:
