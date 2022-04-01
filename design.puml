@@ -1,27 +1,66 @@
 @startuml
 !include https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml
 !include <C4/C4_Container.puml>
-Person(user, "User")
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!define osaPuml https://raw.githubusercontent.com/Crashedmind/PlantUML-opensecurityarchitecture2-icons/master
+!include osaPuml/Common.puml
+!include osaPuml/User/all.puml
+!include FONTAWESOME/users.puml
+!include <office/Servers/database_server>
+!include <office/Servers/application_server>
 
+title Голосовой помощник
+
+'Добавляем теги для цветов контейнеров
+AddElementTag("bg_red", $bgColor="#ff0000")
+AddElementTag("bg_green", $bgColor="#008000")
+AddElementTag("bg_yellow", $bgColor="#FFFF00")
+AddElementTag("font_black", $fontColor="#000000")
+AddElementTag("border_black", $borderColor="#000000")
+
+'Добавляем теги для типов контейнеров
+AddContainerTag("webApp", $sprite="application_server", $legendText="web app container")
+AddContainerTag("db", $sprite="database_server", $legendText="database container")
+
+'Объявляем цвета
+!$COLOR_BLUE = "#4169E1"
+!$COLOR_NEUTRAL = "#f7f7f7"
+!$COLOR_BLACK = "#000000"
+!$COLOR_REL_LINE = "#4169E1"
+!$COLOR_REL_TEXT = "#8073ac"
+
+'Меняем стиль линий и элемента person
+UpdateElementStyle("person", $bgColor=$COLOR_BLUE, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_BLACK, $shadowing="true")
+UpdateRelStyle($lineColor=$COLOR_REL_LINE, $textColor=$COLOR_REL_TEXT)
+
+'Добавляем легенду
+LAYOUT_WITH_LEGEND()
+
+'Элемент пользователь
+Person(user, "User", $sprite="osa_user_black_hat")
+
+'Система movie_service
 System_Boundary(movie_service, "Movie Service") {
-    Container(async_api, "Async API", "Python, FastAPI")
-    ContainerDb(movie_db, "DB", "ElasticSearch")
+    Container(async_api, "Async API", "Python, FastAPI", $tags="bg_green+border_black+webApp")
+    ContainerDb(movie_es, "DB ES", "ElasticSearch", $tags="bg_green+border_black+db")
+    ContainerDb(movie_redis, "DB Redis", "Redis", $tags="bg_green+border_black+db")
+
 }
 
+'Система локального распознования и синтеза речи (Bob)
 System_Boundary(voice_rd, "BOB") {
-    Container(recorder, "Voice Recorder", "Python")
-    Container(decoder, "Voice Decoder", "Python")
-    Container(encoder, "Voice Encoder", "Python")
+    Container(recorder, "Voice Recorder", "Python", $tags="bg_yellow+font_black")
+    Container(decoder, "Voice Decoder", "Python", $tags="bg_yellow+font_black")
+    Container(encoder, "Voice Encoder", "Python", $tags="bg_yellow+font_black")
 }
 
-System_Boundary(voice_assistent, "Voice Assistent") {
-    Container(assistent_api, "Assistent API", "Python, FastAPI")
-}
+'Сам голосовой ассистент
+Container(assistent_api, "Assistent API", "Python, FastAPI", $descr="api для работы ассистента", $tags="bg_red+font_black+webApp")
 
+'Навыки Алисы
 System_Boundary(alice_skill, "Alice skill") {
-    Container(skill, "alice skill", "API")
+    Container(skill, "alice skill", "API", $tags="webApp")
 }
-
 
 Rel(user, recorder, "Voice question")
 Rel(user, skill, "Voice question")
@@ -31,11 +70,14 @@ Rel(recorder, decoder, "[.wav]")
 Rel(decoder, assistent_api, "Command", "json")
 Rel(skill, assistent_api, "Command", "json")
 
-Rel_L(assistent_api, async_api, "Command", "json")
-Rel_R(async_api, assistent_api, "Answer", "json")
+Rel(assistent_api, async_api, "Command", "json")
+Rel(async_api, assistent_api, "Answer", "json")
 
-Rel(async_api, movie_db, "Responce")
-Rel(movie_db, async_api, "Answer")
+Rel(async_api, movie_es, "Responce")
+Rel(async_api, movie_redis, "Set state")
+
+Rel(movie_es, async_api, "Answer")
+Rel(movie_redis, async_api, "Get state")
 
 Rel_L(assistent_api, encoder, "Answer", "json")
 Rel_L(assistent_api, skill, "Answer", "json")
