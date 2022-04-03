@@ -35,7 +35,6 @@ class ESSaver(Settings, Schemes):
 
     def __get_es_link(self):
         es_params = self.get_settings('es')
-        logger.info(es_params)
         return f"http://{es_params['host']}:{es_params['port']}"
 
     @backoff()

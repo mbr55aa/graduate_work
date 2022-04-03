@@ -40,12 +40,10 @@ class Settings:
 
 
 def read_env_setting(db_name):
-    logger.info(db_name)
     if db_name == 'es':
         settings = read_env_es_setting()
     elif db_name == 'pg':
         settings = read_env_pg_setting()
-        logger.info(settings)
     for value in settings.values():
         if not value:
             logger.error('Ошибка при попытке чтпния параметров из env.(Не все необходимые параметры объявлены.)')
