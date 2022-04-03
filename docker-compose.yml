@@ -54,6 +54,8 @@ services:
       - movies_network
     depends_on:
       - postgres
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
 
   etl:
     build:
@@ -76,11 +78,13 @@ services:
     container_name: redis_movies
     volumes:
       - ./redis/conf/etc:/usr/local/etc/redis
+      - redis_data:/data
     ports:
       - "6379:6379"
     networks:
       - movies_network
     command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+
 
   fast_api:
     build:
@@ -99,6 +103,8 @@ services:
     command: ["python", "main.py"]
 
 volumes:
+  es_data:
+  redis_data:
   static_volume:
 
 networks:
