@@ -5,7 +5,7 @@ services:
     image: postgres:13-alpine
     container_name: postgres_movies
     env_file:
-      - db.env
+      - ./config/.env
     volumes:
       - ./pgdata:/var/lib/postgresql/data
 #    ports:
@@ -25,6 +25,7 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     depends_on:
       - postgres
+    env_file: ./config/.env
 
   nginx:
     image: nginx:1.19.2
@@ -42,7 +43,7 @@ services:
       - django
 
   elastic:
-#    image: elasticsearch:7.7.0  # Requires much less memory
+    # image: elasticsearch:7.7.0  # Requires much less memory
     image: elasticsearch:7.14.0
     container_name: elastic_movies
     environment:
@@ -53,6 +54,8 @@ services:
       - movies_network
     depends_on:
       - postgres
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
 
   etl:
     build:
@@ -67,6 +70,8 @@ services:
     depends_on:
       - postgres
       - elastic
+    env_file:
+      - ./config/.env
 
   redis:
     build:
@@ -75,29 +80,33 @@ services:
     container_name: redis_movies
     volumes:
       - ./redis/conf/etc:/usr/local/etc/redis
+      - redis_data:/data
     ports:
       - "6379:6379"
     networks:
       - movies_network
     command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
 
+
   fast_api:
     build:
       context: fast_api
       dockerfile: Dockerfile
     container_name: fast_api_movies
-    env_file:
-      - fa.env
     volumes:
       - ./fast_api:/fast_api:ro
     networks:
       - movies_network
-    command: ["python", "main.py"]
     depends_on:
       - elastic
       - redis
+    env_file:
+      - ./config/.env
+    command: ["python", "main.py"]
 
 volumes:
+  es_data:
+  redis_data:
   static_volume:
 
 networks:
