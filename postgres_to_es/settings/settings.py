@@ -27,43 +27,31 @@ class Settings:
 
     __settings = None
 
-    def get_settings(self, db_name):
-        self.__settings = read_env_setting(db_name)
+    def get_settings(self):
         if not self.__settings:
-            self.__settings = AllSettings.parse_file('settings/settings.json')
-            logger.info('Параметры считаны из файла settings.json')
-            if db_name == 'es':
-                return dict(self.__settings.film_work_es)
-            elif db_name == 'pg':
-                return dict(self.__settings.film_work_pg)
+            self.__settings = read_env_setting()
         return self.__settings
 
 
-def read_env_setting(db_name):
-    if db_name == 'es':
-        settings = read_env_es_setting()
-    elif db_name == 'pg':
-        settings = read_env_pg_setting()
-    for value in settings.values():
-        if not value:
-            logger.error('Ошибка при попытке чтпния параметров из env.(Не все необходимые параметры объявлены.)')
-            return None
-    logger.info(f'Параметры успешно считаны из env. host:{settings["host"]}')
-    return settings
+def read_env_setting():
+    return AllSettings(
+        film_work_pg=read_env_pg_setting(),
+        film_work_es=read_env_es_setting(),
+    )
 
 
 def read_env_pg_setting():
-    return dict(
-        host=os.getenv('POSTGRES_HOST'),
-        port=os.getenv('POSTGRES_PORT'),
-        dbname=os.getenv('POSTGRES_DB'),
-        user=os.getenv('POSTGRES_USER'),
-        password=os.getenv('POSTGRES_PASSWORD'),
+    return PostgresSettings(
+        host=os.getenv('POSTGRES_HOST', 'localhost'),
+        port=os.getenv('POSTGRES_PORT', 5432),
+        dbname=os.getenv('POSTGRES_DB', 'postgres'),
+        user=os.getenv('POSTGRES_USER', 'postgres'),
+        password=os.getenv('POSTGRES_PASSWORD', 'postgres'),
     )
 
 
 def read_env_es_setting():
-    return dict(
-        host=os.getenv('ELASTIC_HOST'),
-        port=os.getenv('ELASTIC_PORT'),
+    return ElasticsearchSettings(
+        host=os.getenv('ELASTIC_HOST', 'localhost'),
+        port=os.getenv('ELASTIC_PORT', 9200),
     )

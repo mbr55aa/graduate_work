@@ -1,17 +1,17 @@
 import logging
+from typing import List
+
 import requests
 from elasticsearch import Elasticsearch, helpers
-from typing import List
-import os
-from settings.settings import Settings
-from settings.schemes import Schemes
+
 from resources import backoff
+from settings.schemes import Schemes
+from settings.settings import Settings
 
 logger = logging.getLogger(__name__)
 
 
 class ESSaver(Settings, Schemes):
-
     __es_con = None
 
     SCHEMES = {
@@ -34,8 +34,8 @@ class ESSaver(Settings, Schemes):
         return self.__es_con
 
     def __get_es_link(self):
-        es_params = self.get_settings('es')
-        return f"http://{es_params['host']}:{es_params['port']}"
+        es_params = self.get_settings().film_work_es
+        return f"http://{es_params.host}:{es_params.port}"
 
     @backoff()
     def create_index(self, index: str):

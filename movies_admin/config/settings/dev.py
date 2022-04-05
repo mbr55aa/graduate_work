@@ -9,9 +9,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ.get('POSTGRES_DB', 'movies'),
         'USER': os.environ.get('POSTGRES_USER', 'postgres'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'postgres'),  # Почему не безопасно? Реальный пароль в env ;-)
-        'HOST': os.environ.get('DJANGO_DATABASE_HOST', '127.0.0.1'),
-        'PORT': os.environ.get('DJANGO_DATABASE_PORT', 5432),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'postgres'),
+        'HOST': os.environ.get('POSTGRES_HOST', '127.0.0.1'),
+        'PORT': os.environ.get('POSTGRES_PORT', 5432),
         'OPTIONS': {
            'options': '-c search_path=public,content'
         }
