@@ -1,4 +1,4 @@
-import os
+import logging
 
 import psycopg2
 import psycopg2.extras
@@ -6,7 +6,6 @@ from psycopg2 import DatabaseError
 
 from resources import backoff
 from settings.settings import Settings
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -32,4 +31,4 @@ class PGLoader(Settings):
         return self.__cursor
 
     def __get_db_params(self):
-        return self.get_settings()['pg']
+        return dict(self.get_settings().film_work_pg)
