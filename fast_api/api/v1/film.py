@@ -26,8 +26,9 @@ from http import HTTPStatus
 from typing import List, Literal, Optional
 from uuid import UUID
 
-from core.config import ErrorMessage
 from fastapi import APIRouter, Depends, HTTPException, Query
+
+from core.config import ErrorMessage
 from models.film import FilmApi, FilmBriefApi, FilmGenreApi, FilmPeopleApi
 from services.film import FilmService, get_film_service
 
@@ -35,17 +36,22 @@ from services.film import FilmService, get_film_service
 router = APIRouter()
 
 
-@router.get("/search")
+@router.get("/search",
+            response_model=List[FilmBriefApi],
+            summary="Film serach",
+            description="<b>Full text search by filmwork by field \"title\".</b><br>"
+                        "<pre>An example of a call that should be handled by the API:<br>"
+                        "#GET /api/v1/film/search?query=star&page[size]=50&page[number]=1</pre>",
+            response_description="List of filmworks: title and raiting",
+            tags=['Filmworks']
+            )
 async def film_search(
-    query: str = Query(None, alias="query_string"),
-    page_size: int = Query(10, alias="page[size]"),
-    page_number: int = Query(1, alias="page[number]"),
-    film_service: FilmService = Depends(get_film_service),
+        query: str = Query(None, alias="query_string"),
+        page_size: int = Query(10, alias="page[size]"),
+        page_number: int = Query(1, alias="page[number]"),
+        film_service: FilmService = Depends(get_film_service),
 ) -> List[FilmBriefApi]:
-    """
-    Примеры обращений, которые должны обрабатываться API
-    #GET /api/v1/film/search?query=star&page[size]=50&page[number]=1
-    """
+    """Function of film serach."""
     logging.debug(
         f"Получили параметры {query=}-{type(query)},"
         f" {page_size=}-{type(page_size)}, {page_number=}-{type(page_number)}"
@@ -63,15 +69,20 @@ async def film_search(
     ]
 
 
-@router.get("/{film_id}", response_model=FilmApi)
+@router.get("/{film_id}",
+            response_model=FilmApi,
+            summary="Search filmwork by identifier",
+            description="<b>Filmwork with given id</b><br>"
+                        "<pre>Examples of call that should be handled by the API:<br>"
+                        "#GET /api/v1/film/bf3bd131-b844-4585-9974-6c374cff2371<br>"
+                        "#GET /api/v1/film/ff00b2a9-9e85-44af-922f-5f3504b82c15</pre>",
+            response_description="Information about the filmwork",
+            tags=['Filmworks']
+            )
 async def film_details(
-    film_id: str, film_service: FilmService = Depends(get_film_service)
+        film_id: str, film_service: FilmService = Depends(get_film_service)
 ) -> FilmApi:
-    """
-    Пример обращений, которые должны обрабатываться API
-    #GET /api/v1/film/bf3bd131-b844-4585-9974-6c374cff2371
-    #GET /api/v1/film/ff00b2a9-9e85-44af-922f-5f3504b82c15
-    """
+    """Function to get film details."""
     film = await film_service.get_by_id(film_id)
     if not film:
         # Если фильм не найден, отдаём 404 статус
@@ -112,19 +123,25 @@ async def film_details(
     )
 
 
-@router.get("/")
+@router.get("/",
+            response_model=List[FilmBriefApi],
+            summary="List of filmworks",
+            description="<b>List of filmworks with sort, filter by genre and pagination</b><br>"
+                        "<pre>Examples of call that should be handled by the API:<br>"
+                        "#GET /api/v1/film?sort=-imdb_rating&page[size]=50&page[number]=1<br>"
+                        "#GET /api/v1/film?filter[genre]=fb58fd7f-7afd-447f-b833-e51e45e2a778"
+                        "&sort=-imdb_rating&page[size]=50&page[number]=1</pre>",
+            response_description="Список кинопроизведений: название и рейтинг",
+            tags=['Filmworks']
+            )
 async def film_list(
-    sort: Literal["-imdb_rating", "+imdb_rating"] = "-imdb_rating",
-    filter_genre: Optional[UUID] = Query(None, alias="filter[genre]"),
-    page_size: int = Query(10, alias="page[size]"),
-    page_number: int = Query(1, alias="page[number]"),
-    film_service: FilmService = Depends(get_film_service),
+        sort: Literal["-imdb_rating", "+imdb_rating"] = "-imdb_rating",
+        filter_genre: Optional[UUID] = Query(None, alias="filter[genre]"),
+        page_size: int = Query(10, alias="page[size]"),
+        page_number: int = Query(1, alias="page[number]"),
+        film_service: FilmService = Depends(get_film_service),
 ) -> List[FilmBriefApi]:
-    """
-    Примеры обращений, которые должны обрабатываться API
-    #GET /api/v1/film?sort=-imdb_rating&page[size]=50&page[number]=1
-    #GET /api/v1/film?filter[genre]=fb58fd7f-7afd-447f-b833-e51e45e2a778&sort=-imdb_rating&page[size]=50&page[number]=1
-    """
+    """Function to get list filmworks."""
     logging.debug(
         f"Получили параметры {sort=}-{type(sort)}, {filter_genre=}-{type(filter_genre)},"
         f" {page_size=}-{type(page_size)}, {page_number=}-{type(page_number)}"
