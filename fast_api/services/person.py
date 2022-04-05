@@ -1,3 +1,4 @@
+import logging
 from functools import lru_cache
 from typing import List, Optional
 from uuid import UUID
@@ -9,6 +10,7 @@ from fastapi import Depends
 from models.person import Person, PersonBrief
 from services.abstract import AbstractService
 
+logger = logging.getLogger(__name__)
 
 class PersonService(AbstractService):
     """
@@ -87,10 +89,27 @@ class PersonService(AbstractService):
             "sort": [{sort or "full_name.raw": {"order": "asc"}}],
         }
         if film_uuid:
-            search_query["query"] = {"match": {"films.id": str(film_uuid)}}
+            # search_query["query"] = {"match": {"films.id": str(film_uuid)}}
+            search_query["query"] = {
+                "nested": {
+                    "path": "films",
+                    "query": {
+                        "bool": {
+                            "must": {
+                                "match": {
+                                    "films.id": str(film_uuid)
+                                }
+
+                            }
+                        }
+
+                    }
+                }
+            }
         if filter_name:
             search_query["query"] = {"match": {"full_name": filter_name}}
         es_fields = ["id", "full_name", "birth_date"]
+        # logger.info(f'search_query:{search_query}')
         doc = await self.storage.search("persons", search_query, es_fields)
         persons_info = doc.get("hits").get("hits")
         return [PersonBrief(**person.get("_source")) for person in persons_info]
