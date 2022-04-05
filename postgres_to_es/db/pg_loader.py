@@ -32,4 +32,4 @@ class PGLoader(Settings):
         return self.__cursor
 
     def __get_db_params(self):
-        return self.get_settings('pg')
+        return self.get_settings()['pg']
