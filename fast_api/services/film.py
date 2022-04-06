@@ -1,6 +1,7 @@
 from functools import lru_cache
 from typing import List, Optional
 from uuid import UUID
+import logging
 
 import orjson
 from db.cache import MemoryCache, get_cache
@@ -8,6 +9,9 @@ from db.storage import AbstractStorage, get_storage
 from fastapi import Depends
 from models.film import Film, FilmBrief
 from services.abstract import AbstractService
+
+
+logger = logging.getLogger(__name__)
 
 
 class FilmService(AbstractService):
@@ -95,6 +99,7 @@ class FilmService(AbstractService):
             query,
             "title",
         )
+        # logger.info(f'search_query:{search_query}')
         doc = await self.storage.search("movies", search_query, es_fields)
         films_info = doc.get("hits").get("hits")
         return [FilmBrief(**film.get("_source")) for film in films_info]

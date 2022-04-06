@@ -34,6 +34,7 @@ from services.film import FilmService, get_film_service
 
 # Объект router, в котором регистрируем обработчики
 router = APIRouter()
+logger = logging.getLogger(__name__)
 
 
 @router.get("/search",
@@ -52,7 +53,7 @@ async def film_search(
         film_service: FilmService = Depends(get_film_service),
 ) -> List[FilmBriefApi]:
     """Function of film serach."""
-    logging.debug(
+    logger.debug(
         f"Получили параметры {query=}-{type(query)},"
         f" {page_size=}-{type(page_size)}, {page_number=}-{type(page_number)}"
     )
@@ -128,8 +129,8 @@ async def film_details(
             summary="List of filmworks",
             description="<b>List of filmworks with sort, filter by genre and pagination</b><br>"
                         "<pre>Examples of call that should be handled by the API:<br>"
-                        "#GET /api/v1/film?sort=-imdb_rating&page[size]=50&page[number]=1<br>"
-                        "#GET /api/v1/film?filter[genre]=fb58fd7f-7afd-447f-b833-e51e45e2a778"
+                        "#GET /api/v1/film/?sort=-imdb_rating&page[size]=50&page[number]=1<br>"
+                        "#GET /api/v1/film/?filter[genre]=fb58fd7f-7afd-447f-b833-e51e45e2a778"
                         "&sort=-imdb_rating&page[size]=50&page[number]=1</pre>",
             response_description="Список кинопроизведений: название и рейтинг",
             tags=['Filmworks']
@@ -142,7 +143,7 @@ async def film_list(
         film_service: FilmService = Depends(get_film_service),
 ) -> List[FilmBriefApi]:
     """Function to get list filmworks."""
-    logging.debug(
+    logger.info(
         f"Получили параметры {sort=}-{type(sort)}, {filter_genre=}-{type(filter_genre)},"
         f" {page_size=}-{type(page_size)}, {page_number=}-{type(page_number)}"
     )

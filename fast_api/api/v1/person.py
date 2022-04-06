@@ -10,7 +10,7 @@ from models.person import PersonAPI, PersonBriefAPI
 from services.person import PersonService, get_person_service
 
 router = APIRouter()
-
+logger = logging.getLogger(__name__)
 
 @router.get('/{person_id}',
             response_model=PersonAPI,
@@ -57,8 +57,8 @@ async def person_list(
         person_service: PersonService = Depends(get_person_service)
 ) -> List[PersonBriefAPI]:
     """Функция, возвращающая список всех людей"""
-    logging.debug(f"Получили параметры {sort=}-{type(sort)}, {filter_film=}-{type(filter_film)},"
-                  f" {page_size=}-{type(page_size)}, {page_number=}-{type(page_number)}")
+    logger.bedug(f"Получили параметры {sort=}-{type(sort)}, {filter_film=}-{type(filter_film)},"
+                 f" {page_size=}-{type(page_size)}, {page_number=}-{type(page_number)}")
     persons = await person_service.get_list(filter_film, filter_name, sort, page_size, page_number)
     if not persons:
         # Если выборка пустая, отдаём 404 статус

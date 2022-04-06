@@ -43,15 +43,24 @@ class ElasticStorage(AbstractStorage):
         return data
 
     async def make_search_query(self, some_index, filter_path, filter_col,
-                                filter_param, sort_column, sort_order,
+                                filter_genre, sort_column, sort_order,
                                 page_size, page_number, query, query_col):
-
-        if query or filter_param:
+        if query or filter_genre:
             match_filter = []
             if query:
                 match_filter.append({"match": {f"{query_col}": str(query)}})
-            if filter_param:
-                match_filter.append({"match": {f"{filter_path}.{filter_col}": str(filter_param)}})
+            if filter_genre:
+                # match_filter.append({"match": {f"{filter_path}.{filter_col}": str(filter_genre)}})
+                match_filter.append({
+                    "nested": {
+                        "path": "genres",
+                        "query": {
+                            "bool": {
+                                "must": [{"match": {f"{filter_path}.{filter_col}": str(filter_genre)}}]
+                            }
+                        }
+                    }
+                })
             sub_query = {
                         "bool": {
                             "must": match_filter
