@@ -1,0 +1,23 @@
+root:
+    [$Actor $Of? $Film]
+
+slots:
+    film:
+        source: $Film
+
+filler:
+    алиса
+
+$Film:
+    .+
+
+$Of:
+    %lemma
+    в фильме
+    в кино
+
+$Actor:
+    %lemma
+    какие? актеры (играли|снимались)?
+    кто (снимался|играл)
+    кто главный? актер
