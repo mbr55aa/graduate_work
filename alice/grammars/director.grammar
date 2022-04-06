@@ -1,5 +1,6 @@
 root:
     [$Director $Of? $Film]
+    $Ellipsis
 
 slots:
     film:
@@ -8,6 +9,11 @@ slots:
 filler:
     алиса
 
+$Ellipsis:
+    $LeftFiller [$Director]
+
+$LeftFiller:
+    а
 $Film:
     .+
 

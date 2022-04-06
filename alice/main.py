@@ -1,5 +1,5 @@
 import phrases
-from movies import get_director
+from movies import get_director, get_actor
 from phrases import get_phrase
 
 
@@ -24,6 +24,8 @@ def handler(event, context):
             text = get_phrase(phrases.REPEAT)
     elif intents.get("director"):
         text, current_state = get_director(intents.get("director"), current_state)
+    elif intents.get("actor"):
+        text, current_state = get_actor(intents.get("actor"), current_state)
     elif command:
         text = get_phrase(phrases.UNSUCCESSFUL)
 
