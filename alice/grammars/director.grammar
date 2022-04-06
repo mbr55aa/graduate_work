@@ -1,0 +1,23 @@
+root:
+    [$Director $Of? $Film]
+
+slots:
+    film:
+        source: $Film
+
+filler:
+    алиса
+
+$Film:
+    .+
+
+$Of:
+    %lemma
+    фильм
+    кино
+
+$Director:
+    %lemma
+    кто снял
+    кто? автор
+    кто? режиссер
