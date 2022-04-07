@@ -2,6 +2,7 @@
 
 import json
 import requests
+from typing import List
 from uuid import UUID
 
 from core import config
@@ -20,15 +21,15 @@ class SearchConnector:
         film_data = self._get_film(film_uuid)
         return Film(**film_data)
 
-    def find_film_directors(self, search_str: str) -> str:
+    def find_film_directors(self, search_str: str) -> List[str]:
         film = self.find_film_data(search_str)
         return film.directors_names
 
-    def find_film_actors(self, search_str: str) -> str:
+    def find_film_actors(self, search_str: str) -> List[str]:
         film = self.find_film_data(search_str)
         return film.actors_names
 
-    def find_film_writers(self, search_str: str) -> str:
+    def find_film_writers(self, search_str: str) -> List[str]:
         film = self.find_film_data(search_str)
         return film.writers_names
 
