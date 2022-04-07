@@ -16,11 +16,11 @@ class SearchConnector:
         pass
 
     def find_film_data(self, search_str: str) -> Film:
-        film_uuid = self.find_film(search_str)
+        film_uuid = self.find_film_uuid(search_str)
         film_data = self._get_film(film_uuid)
         return Film(**film_data)
 
-    def find_film(self, search_str: str) -> UUID:
+    def find_film_uuid(self, search_str: str) -> UUID:
         request_str = 'film/search?query_string=' + search_str + '&page[size]=1'
         return self._get_response(request_str)[0].get('uuid')
 
