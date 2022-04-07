@@ -119,8 +119,10 @@ async def film_details(
         description=film.description,
         genre=genre_list,
         actors=actors_list,
+        actors_names=film.actors_names,
         writers=writers_list,
-        director=film.director,
+        writers_names=film.writers_names,
+        directors_names=film.director,
     )
 
 

@@ -25,8 +25,10 @@ class FilmApi(OrjsonModel):
     description: str
     genre: Optional[List[FilmGenreApi]]
     actors: Optional[List[FilmPeopleApi]]
+    actors_names: Optional[List[str]]
     writers: Optional[List[FilmPeopleApi]]
-    director: Optional[str]
+    writers_names: Optional[List[str]]
+    directors_names: Optional[List[str]]
 
 
 class FilmBriefApi(OrjsonModel):
@@ -51,8 +53,10 @@ class Film(OrjsonModel):
     description: str
     genres: List[dict]
     actors: Optional[List[dict]]
+    actors_names: Optional[List[str]]
     writers: Optional[List[dict]]
-    director: Optional[str]
+    writers_names: Optional[List[str]]
+    director: Optional[List[str]]
 
 
 class FilmBrief(OrjsonModel):

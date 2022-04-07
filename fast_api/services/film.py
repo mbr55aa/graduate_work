@@ -44,7 +44,10 @@ class FilmService(AbstractService):
             "description",
             "genres",
             "actors",
+            "actors_names",
             "writers",
+            "writers_names",
+            "director",
         ]
         doc = await self.storage.get("movies", film_id, es_fields)
         film_info = doc.get("_source")
