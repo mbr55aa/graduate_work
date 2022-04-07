@@ -14,19 +14,21 @@ class SearchConnector:
     def __init__(self):
         pass
 
-    def find_film_director(self, search_str: str) -> str:
+    def find_film_data(self, search_str: str) -> str:
         film_uuid = self.find_film(search_str)
         film_data = self._get_film(film_uuid)
         return film_data
 
     def find_film(self, search_str: str) -> UUID:
-        return self._get_response(search_str)[0].get('uuid')
+        request_str = 'film/search?query_string=' + search_str + '&page[size]=1'
+        return self._get_response(request_str)[0].get('uuid')
 
     def _get_film(self, film_uuid):
-        pass
+        request_str = 'film/' + film_uuid
+        return self._get_response(request_str)
 
-    def _get_response(self, get_params):
-        resp = requests.get(self._get_api_url() + 'film/search?query_string=' + get_params + '&page[size]=1&page[number]=1')
+    def _get_response(self, request_str):
+        resp = requests.get(self._get_api_url() + request_str)
         return json.loads(resp.content.decode("UTF-8"))
 
     def _get_api_url(self):
