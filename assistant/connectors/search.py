@@ -24,6 +24,14 @@ class SearchConnector:
         film = self.find_film_data(search_str)
         return film.directors_names
 
+    def find_film_actors(self, search_str: str) -> str:
+        film = self.find_film_data(search_str)
+        return film.actors_names
+
+    def find_film_writers(self, search_str: str) -> str:
+        film = self.find_film_data(search_str)
+        return film.writers_names
+
     def find_film_uuid(self, search_str: str) -> UUID:
         request_str = 'film/search?query_string=' + search_str + '&page[size]=1'
         return self._get_response(request_str)[0].get('uuid')
