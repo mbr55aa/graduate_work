@@ -2,6 +2,7 @@
 import pyttsx3  # синтез речи (Text-To-Speech)
 from assistant.voice_assistant import VoiceAssistant
 import logging
+from termcolor import colored
 
 logger = logging.getLogger(__name__)
 
@@ -15,8 +16,8 @@ class SpeechSynthesis:
         # инициализация инструмента синтеза речи
         self.ttsEngine = pyttsx3.init()
         # выбираем русский голос (27)
-        voice = self.ttsEngine.getProperty("voices")[27]
-        self.ttsEngine.setProperty("voice", voice.id)
+        voice = self.ttsEngine.getProperty('voices')[27]
+        self.ttsEngine.setProperty('voice', voice.id)
         self.assistant = VoiceAssistant(voice)
 
     def play_voice_assistant_speech(self, text_to_speech):
@@ -26,5 +27,5 @@ class SpeechSynthesis:
         """
         self.ttsEngine.say(str(text_to_speech))
         self.ttsEngine.runAndWait()
-        logger.info(text_to_speech)
+        logger.info(colored(text_to_speech, 'green'))
 
