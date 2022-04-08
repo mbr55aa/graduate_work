@@ -1,0 +1,29 @@
+root:
+    [$Director $Of? $Film]
+    $Ellipsis
+
+slots:
+    film:
+        source: $Film
+
+filler:
+    алиса
+
+$Ellipsis:
+    $LeftFiller [$Director]
+
+$LeftFiller:
+    а
+$Film:
+    .+
+
+$Of:
+    %lemma
+    фильм
+    кино
+
+$Director:
+    %lemma
+    кто снял
+    кто? автор
+    кто? режиссер
