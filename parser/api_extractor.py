@@ -52,6 +52,26 @@ def get_top_250_films():
 
 
 def get_film_by_id(film_id):
+    """
+    {'kinopoiskId': 326, 'imdbId': 'tt0111161', 'nameRu': 'Побег из Шоушенка', 'nameEn': None, '
+    nameOriginal': 'The Shawshank Redemption',
+    'posterUrl': 'https://kinopoiskapiunofficial.tech/images/posters/kp/326.jpg',
+    'posterUrlPreview': 'https://kinopoiskapiunofficial.tech/images/posters/kp_small/326.jpg',
+    'coverUrl': 'https://avatars.mds.yandex.net/get-ott/1672343/2a0000016b03d1f5365474a90d26998e2a9f/orig',
+    'reviewsCount': 586, 'ratingGoodReview': 92.7, 'ratingGoodReviewVoteCount': 517, 'ratingKinopoisk': 9.1,
+    'ratingKinopoiskVoteCount': 823300, 'ratingImdb': 9.3, 'ratingImdbVoteCount': 2568406,
+    'ratingFilmCritics': 8.4, 'ratingFilmCriticsVoteCount': 82, 'ratingAwait': None,
+    'ratingAwaitCount': 2, 'ratingRfCritics': None, 'ratingRfCriticsVoteCount': 1,
+    'webUrl': 'https://www.kinopoisk.ru/film/326/', 'year': 1994, 'filmLength': 142,
+    'slogan': 'Страх - это кандалы. Надежда - это свобода',
+    'description': 'Бухгалтер Энди Дюфрейн обвинён в убийстве собственной жены и её любовника.',
+    'shortDescription': 'Несправедливо осужденный банкир готовит побег из тюрьмы. Тим Роббинс в выдающейся',
+    'editorAnnotation': None, 'isTicketsAvailable': False, 'productionStatus': None,
+    'type': 'FILM', 'ratingMpaa': 'r', 'ratingAgeLimits': 'age16',
+    'countries': [{'country': 'США'}], 'genres': [{'genre': 'драма'}],
+    'startYear': None, 'endYear': None, 'serial': False, 'shortFilm': False, 'completed': False,
+    'hasImax': False, 'has3D': False, 'lastSync': '2022-04-03T22:20:07.011482'}
+    """
     try:
         response = make_request(f"api/v2.2/films/{film_id}")
         return response.json()
