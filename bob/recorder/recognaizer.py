@@ -40,7 +40,7 @@ class Recognaizer:
 
             # анализ записанного в микрофон аудио (чтобы избежать повторов фразы)
             wave_audio_file = wave.open('microphone-results.wav', 'rb')
-            model = Model('models/vosk-model-small-ru-0.22')
+            model = Model(f'models/{VOSK_MODEL}')
             offline_recognizer = KaldiRecognizer(model, wave_audio_file.getframerate())
             data = wave_audio_file.readframes(wave_audio_file.getnframes())
             if len(data) > 0:
