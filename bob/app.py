@@ -46,6 +46,7 @@ if __name__ == '__main__':
     synthesizer = SpeechSynthesis()
     # Экземпляр класса классификатора запросов
     classifier = Classifier(commands)
+    # Проигрываем вступление
     play_intro(synthesizer)
     while True:
         run_step()

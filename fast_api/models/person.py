@@ -1,4 +1,5 @@
-import datetime
+"""Модели персон."""
+
 from typing import List, Optional
 from uuid import UUID
 
@@ -10,7 +11,6 @@ class PersonAPI(OrjsonModel):
     Возвращаемая информация о человеке - идентификатор,
     имя, дата рождения м список фильмов с его участием.
     """
-
     uuid: UUID
     full_name: str
     birth_date: Optional[str]
@@ -22,7 +22,6 @@ class PersonBriefAPI(OrjsonModel):
     Сокращенная информация о человеке - возвращается при запросе
     списка
     """
-
     uuid: UUID
     full_name: str
     birth_date: Optional[str]
@@ -32,7 +31,6 @@ class Person(OrjsonModel):
     """
     Информация о человеке
     """
-
     uuid: UUID
     full_name: str
     # FIXME:падают тесты
@@ -45,7 +43,6 @@ class PersonBrief(OrjsonModel):
     """
     Сокращенная информация о человеке
     """
-
     id: UUID
     full_name: str
     # FIXME:падают тесты
