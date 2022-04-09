@@ -1,48 +1,55 @@
-import logging
+"""Список команд, которые обрабатывает голосовой помощник."""
 from assistant.connector import play_greetings, play_failure_phrase, search_director, \
-  search_actor, play_farewell_and_quit
-
-logger = logging.getLogger(__name__)
+  search_actor, play_farewell_and_quit, play_help
 
 config = {
-  "intents": {
-    "greeting": {
-      "examples": [
-        "привет",
-        "здравствуй",
-        "добрый день",
-        "доброе утро",
-        "добрый вечер",
-        "хай"
+  'intents': {
+    'greeting': {
+      'examples': [
+        'привет',
+        'здравствуй',
+        'добрый день',
+        'доброе утро',
+        'добрый вечер',
+        'хай'
       ],
-      "responses": play_greetings
+      'responses': play_greetings
     },
-    "farewell": {
-      "examples": [
-        "пока",
-        "увидимся",
-        "до встречи",
-        "хватит",
+    'farewell': {
+      'examples': [
+        'пока',
+        'увидимся',
+        'до встречи',
+        'хватит',
       ],
-      "responses": play_farewell_and_quit
+      'responses': play_farewell_and_quit
     },
-    "search_actor": {
-      "examples": [
-        "найди актёра",
-        "кто актёр",
-        "кто играл",
-        "кто сыграл",
+    'search_actor': {
+      'examples': [
+        'найди актёра',
+        'кто актёр',
+        'кто играл',
+        'кто сыграл',
       ],
-      "responses": search_actor
+      'responses': search_actor
     },
-    "search_director": {
-      "examples": [
-        "найди режиссёра",
-        "кто режиссёр",
-        "кто снял",
+    'search_director': {
+      'examples': [
+        'найди режиссёра',
+        'кто режиссёр',
+        'кто снял',
       ],
-      "responses": search_director
-    }
+      'responses': search_director
+    },
+    'help': {
+      'examples': [
+        'что ты умеешь',
+        'что ты мошежь',
+        'что спросить',
+        'помощь',
+      ],
+      'responses': play_help
+    },
   },
-  "failure_phrases": play_failure_phrase
+  'failure_phrases': play_failure_phrase
 }

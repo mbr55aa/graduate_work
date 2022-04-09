@@ -9,7 +9,7 @@ class Classifier:
 
     def __init__(self, config: dict):
         self.config = config
-        self.vectorizer = TfidfVectorizer(analyzer="char", ngram_range=(2, 3))
+        self.vectorizer = TfidfVectorizer(analyzer='char', ngram_range=(2, 3))
         self.classifier_probability = LogisticRegression()
         self.classifier = LinearSVC()
         self.prepare_corpus()
@@ -20,8 +20,8 @@ class Classifier:
         """
         corpus = []
         target_vector = []
-        for intent_name, intent_data in self.config["intents"].items():
-            for example in intent_data["examples"]:
+        for intent_name, intent_data in self.config['intents'].items():
+            for example in intent_data['examples']:
                 corpus.append(example)
                 target_vector.append(intent_name)
 
@@ -36,8 +36,8 @@ class Classifier:
         :return: наиболее вероятное намерение
         """
         # Временно сделал проверку на полное совпадение начала запроса
-        for intent in self.config["intents"]:
-            if request in self.config["intents"][intent]["examples"]:
+        for intent in self.config['intents']:
+            if request in self.config['intents'][intent]['examples']:
                 return intent
 
         # Пока убрал, потому что работает плохо
