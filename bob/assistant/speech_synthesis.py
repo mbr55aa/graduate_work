@@ -20,7 +20,7 @@ class SpeechSynthesis:
         self.ttsEngine.setProperty('voice', voice.id)
         self.assistant = VoiceAssistant(voice)
 
-    def play_voice_assistant_speech(self, text_to_speech):
+    def play_voice_assistant_speech(self, text_to_speech: str):
         """
         Проигрывание речи ответов голосового ассистента (без сохранения аудио)
         :param text_to_speech: текст, который нужно преобразовать в речь
@@ -28,4 +28,3 @@ class SpeechSynthesis:
         logger.info(colored(text_to_speech, 'green'))
         self.ttsEngine.say(str(text_to_speech))
         self.ttsEngine.runAndWait()
-

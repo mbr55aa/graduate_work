@@ -1,12 +1,15 @@
 """Запись и распознавание речи."""
 
-import logging
-import speech_recognition
-from termcolor import colored
 import json
-from vosk import Model, KaldiRecognizer
+import logging
 import os
 import wave
+from typing import Optional
+
+import speech_recognition
+from termcolor import colored
+from vosk import Model, KaldiRecognizer
+
 from bob.core.config import VOSK_MODEL
 
 logger = logging.getLogger(__name__)
@@ -24,7 +27,7 @@ class Recognaizer:
         self.recognizer = speech_recognition.Recognizer()
         self.microphone = speech_recognition.Microphone()
 
-    def use_offline_recognition(self):
+    def use_offline_recognition(self) -> str:
         """
         Переключение на оффлайн-распознавание речи
         :return: распознанная фраза
@@ -55,8 +58,12 @@ class Recognaizer:
 
         return recognized_data
 
-    def record_and_recognize_audio(self, *args: tuple):
-        """Запись и распознавание аудио."""
+    def record_and_recognize_audio(self, *args: tuple) -> Optional[str]:
+        """
+        Запись и распознавание аудио.
+        :param args: Дополнительные аргументы.
+        :return: recognized_data: Распознанная речь.
+        """
         with self.microphone:
             recognized_data = ''
 
@@ -72,7 +79,7 @@ class Recognaizer:
 
             except speech_recognition.WaitTimeoutError:
                 logger.error('Can you check if your microphone is on, please?')
-                return
+                return None
 
             # использование online-распознавания через Google
             try:
