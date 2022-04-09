@@ -25,7 +25,7 @@ class SpeechSynthesis:
         Проигрывание речи ответов голосового ассистента (без сохранения аудио)
         :param text_to_speech: текст, который нужно преобразовать в речь
         """
+        logger.info(colored(text_to_speech, 'green'))
         self.ttsEngine.say(str(text_to_speech))
         self.ttsEngine.runAndWait()
-        logger.info(colored(text_to_speech, 'green'))
 
