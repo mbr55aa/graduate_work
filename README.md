@@ -44,7 +44,7 @@ $ make down
     ```
   
 - Для поддержки работы оффлайн, необходимо:
-  - в папку `bob/models` поместить [модель](https:/)
+  - в папку `bob/models` поместить [модель](https://drive.google.com/file/d/1INh4uMXfcJfNXhisvVBWrJ_kDNxFoziT/view?usp=sharing)
   - название папки с моделью добавить в .env файл проекта в переменную `VOSK_MODEL`
 
 # Взаимодействие
