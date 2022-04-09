@@ -36,7 +36,7 @@ $ make down
 - Может потребоваться установка portaudio
   - На MAC
     ```console
-    $ breq install portaudio
+    $ brew install portaudio
     ```
   - На Ubuntu
     ```console
