@@ -18,6 +18,9 @@ $ make down
 ## Настройка Postgres
 - Добавление файлов БД. Создайте в корне проекта папку pgdata, и поместите туда файлы БД (можно использовать вот [эти](https://drive.google.com/file/d/1INh4uMXfcJfNXhisvVBWrJ_kDNxFoziT/view?usp=sharing))
 
+## Настройка Боба
+- скачать русскую библиотеку [Vosk](https://drive.google.com/file/d/1VxUGfnFsuDOJZjts1bzOdaFazdjl-UKf/view?usp=sharing) 
+
 # Взаимодействие
 - Доступ к документации FastAPI осуществляется через http://localhost:8000/api/openapi
 - Доступ к админке Django осуществляется через http://localhost/admin/ (user admin, password 123456)
