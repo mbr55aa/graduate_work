@@ -148,3 +148,4 @@ pgdata
 **state.json
 **settings.json
 *.zip
+/bob/models/
