@@ -10,7 +10,7 @@ from assistant.commands import config as commands
 
 from termcolor import colored
 from classifier.classifier import Classifier
-
+from assistant.connector import play_intro
 
 logger_conf.dictConfig(LOGGING)
 logger = logging.getLogger(__name__)
@@ -46,6 +46,6 @@ if __name__ == '__main__':
     synthesizer = SpeechSynthesis()
     # Экземпляр класса классификатора запросов
     classifier = Classifier(commands)
-
+    play_intro(synthesizer)
     while True:
         run_step()

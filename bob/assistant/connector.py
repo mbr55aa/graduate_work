@@ -20,3 +20,16 @@ def search_director(synthesizer, *args: tuple):
 
 def search_actor(synthesizer, *args: tuple):
     synthesizer.play_voice_assistant_speech('Актеры фильма: вот')
+
+
+def play_help(synthesizer, *args: tuple):
+    synthesizer.play_voice_assistant_speech('Ты можешь у меня спросить кто актер какого нибудь фильма, кто играл, '
+                                            'кто сыграл либо сказать найди актера а так же можно спросить'
+                                            'кто режиссёр какого нибудь фильма кто снял фильм или сказать '
+                                            'найди режиссера')
+
+
+def play_intro(synthesizer):
+    synthesizer.play_voice_assistant_speech('Привет, я голосовой помощник Милена, если хочешь знать что '
+                                            'я могу делать, спроси меня Что ты умеешь или просто помощь.'
+                                            'Для завершения работы скажи хватит или пока')

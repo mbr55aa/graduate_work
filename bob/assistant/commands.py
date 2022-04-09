@@ -1,6 +1,6 @@
 """Список команд, которые обрабатывает голосовой помощник."""
 from assistant.connector import play_greetings, play_failure_phrase, search_director, \
-  search_actor, play_farewell_and_quit
+  search_actor, play_farewell_and_quit, play_help
 
 config = {
   'intents': {
@@ -40,7 +40,16 @@ config = {
         'кто снял',
       ],
       'responses': search_director
-    }
+    },
+    'help': {
+      'examples': [
+        'что ты умеешь',
+        'что ты мошежь',
+        'что спросить',
+        'помощь',
+      ],
+      'responses': play_help
+    },
   },
   'failure_phrases': play_failure_phrase
 }
