@@ -34,11 +34,11 @@ class SearchConnector:
         return film.writers_names
 
     def find_film_uuid(self, search_str: str) -> UUID:
-        request_str = 'film/search?query_string=' + search_str + '&page[size]=1'
+        request_str = f'film/search?query_string={search_str}&page[size]=1'
         return self._get_response(request_str)[0].get('uuid')
 
     def _get_film(self, film_uuid: UUID) -> dict:
-        request_str = 'film/' + film_uuid
+        request_str = f'film/{film_uuid}'
         return self._get_response(request_str)
 
     def _get_response(self, request_str: str) -> dict:
