@@ -1,3 +1,5 @@
+"""Модели жанров."""
+
 from typing import List, Optional
 from uuid import UUID
 
@@ -5,6 +7,9 @@ from models._base import OrjsonModel
 
 
 class GenreAPI(OrjsonModel):
+    """
+    Информация о жанре: Идентификатор, имя, описание, список фильмов
+    """
     uuid: UUID
     name: str
     description: Optional[str]
@@ -12,6 +17,9 @@ class GenreAPI(OrjsonModel):
 
 
 class GenreBriefAPI(OrjsonModel):
+    """
+    Сокращенная информация о жанре: Идентификатор, имя, описание
+    """
     uuid: UUID
     name: str
     description: Optional[str]
@@ -19,7 +27,7 @@ class GenreBriefAPI(OrjsonModel):
 
 class Genre(OrjsonModel):
     """
-        Информация о жанре
+    Информация о жанре
     """
     uuid: UUID
     name: str
@@ -29,8 +37,8 @@ class Genre(OrjsonModel):
 
 class GenreBrief(OrjsonModel):
     """
-        Краткая информация о жанре без списка фильмов.
-        Для возврата списка всех жанров фильма
+    Краткая информация о жанре без списка фильмов.
+    Для возврата списка всех жанров фильма
     """
     id: UUID
     name: str

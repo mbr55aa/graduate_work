@@ -144,8 +144,9 @@ cython_debug/
 *.iml
 
 # defined by Student
-pgdata
+postgres/pgdata
 **state.json
 **settings.json
 *.zip
 /bob/models/
+/postgres/db.dump
