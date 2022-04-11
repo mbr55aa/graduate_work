@@ -48,8 +48,8 @@ services:
     container_name: elastic_movies
     environment:
       - discovery.type=single-node
-    ports:
-      - "9200:9200"
+#    ports:
+#      - "9200:9200"
     networks:
       - movies_network
     depends_on:
@@ -81,8 +81,8 @@ services:
     volumes:
       - ./redis/conf/etc:/usr/local/etc/redis
       - redis_data:/data
-    ports:
-      - "6379:6379"
+#    ports:
+#      - "6379:6379"
     networks:
       - movies_network
     command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
