@@ -7,7 +7,9 @@ services:
     env_file:
       - ./config/.env
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
+      - ./postgres/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+      - ./postgres/db.dump:/var/lib/postgresql/backup/db.dump
+      - ./postgres/pgdata:/var/lib/postgresql/data
 #    ports:
 #      - "5432:5432"
     networks:
