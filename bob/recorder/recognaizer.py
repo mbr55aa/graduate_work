@@ -33,17 +33,18 @@ class Recognaizer:
         :return: распознанная фраза
         """
         recognized_data = ""
-        try:
-            # проверка наличия модели на нужном языке в каталоге приложения
-            if not os.path.exists(f'models/{VOSK_MODEL}'):
-                print(colored("Please download the model from:\n"
-                              "https://alphacephei.com/vosk/models and unpack as 'model' in the current folder.",
-                              "red"))
-                exit(1)
+        # проверка наличия модели на нужном языке в каталоге приложения
+        if not os.path.exists(f'models/{VOSK_MODEL}'):
+            print(colored("Please download the model from:\n"
+                          "https://alphacephei.com/vosk/models and unpack as 'model' in the current folder.",
+                          "red"))
+            exit(1)
 
+        model = Model(f'models/{VOSK_MODEL}')
+
+        try:
             # анализ записанного в микрофон аудио (чтобы избежать повторов фразы)
             wave_audio_file = wave.open('microphone-results.wav', 'rb')
-            model = Model(f'models/{VOSK_MODEL}')
             offline_recognizer = KaldiRecognizer(model, wave_audio_file.getframerate())
             data = wave_audio_file.readframes(wave_audio_file.getnframes())
             if len(data) > 0:
@@ -87,7 +88,10 @@ class Recognaizer:
                 recognized_data = self.recognizer.recognize_google(audio, language='ru').lower()
 
             except speech_recognition.UnknownValueError:
-                logger.exception('Can\'t recognize data.')
+                if not recognized_data:
+                    logger.info('Nothing to recognize.')
+                else:
+                    logger.exception('Can\'t recognize data.')
 
             # в случае проблем с доступом в Интернет происходит попытка использовать offline-распознавание через Vosk
             except speech_recognition.RequestError:
