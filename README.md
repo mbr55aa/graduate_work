@@ -19,7 +19,7 @@ $ make down
 - Добавление файлов БД. Создайте в корне проекта папку pgdata, и поместите туда файлы БД (можно использовать вот [эти](https://drive.google.com/file/d/1INh4uMXfcJfNXhisvVBWrJ_kDNxFoziT/view?usp=sharing))
 
 - Восстановление БД из дампа:
-  1. Скачайте файл [db.dump]()
+  1. Скачайте файл [db.dump](https://drive.google.com/file/d/1m7xdEP368F4tEaXireX7QOVUMbtzkFvc/view?usp=sharing)
   2. Переместите файл в папку `postgres` в корне проекта
   3. Запустите проект и внутри контейнера postgres и выполните следующие команды:
      ```console
