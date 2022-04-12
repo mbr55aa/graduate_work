@@ -11,7 +11,7 @@ blueprint_bob = Blueprint(name="bob", url_prefix="/api/v1/bob", import_name=__na
 
 
 @blueprint_bob.route("/", methods=["GET"])
-def test():
+def api_request():
     method = request.args.get('method')
     query = request.args.get('query')
     if not method or not query:
