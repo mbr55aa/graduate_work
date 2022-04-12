@@ -1,0 +1,29 @@
+root:
+    $Find? $Info? (о|про)? $What $Film
+    $Info (о|про)? $What? $Film?
+    $Find (о|про)? $What $Film?
+
+slots:
+    film:
+        source: $Film
+
+$Film:
+    .+
+
+$Find:
+    %lemma
+    найди
+    поищи
+    скажи
+    расскажи
+
+$Info:
+    %lemma
+    описание
+    информация
+
+$What:
+    %lemma
+    фильм
+    кино
+    сериал
