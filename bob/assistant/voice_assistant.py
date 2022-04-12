@@ -11,18 +11,17 @@ class VoiceAssistant:
     recognition_language = None
     voice_id = None
 
-    def __init__(self, voice):
-        """Функция инициализации экземпляра класса."""
-        # установка голоса по умолчанию
-        self.setup_assistant_voice(voice)
-
-    def setup_assistant_voice(self, voice):
+    def __init__(self, voice: dict):
         """
-        Установка голоса по умолчанию (индекс может меняться в
-        зависимости от настроек операционной системы)
+        Функция инициализации экземпляра класса.
+        :param voice: Голос, полученный из инструмента синтеза речи
         """
-        self.recognition_language = voice.languages
-        self.sex = voice.gender
-        self.name = voice.name
-        self.voice_id = voice.id
+        self.voice = voice
+        self.setup_assistant_voice()
 
+    def setup_assistant_voice(self):
+        """Установка голоса."""
+        self.recognition_language = self.voice.languages
+        self.sex = self.voice.gender
+        self.name = self.voice.name
+        self.voice_id = self.voice.id
