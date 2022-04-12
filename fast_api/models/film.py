@@ -22,7 +22,7 @@ class FilmApi(OrjsonModel):
     uuid: UUID
     title: str
     imdb_rating: float
-    description: str
+    description: Optional[str]
     genre: Optional[List[FilmGenreApi]]
     actors: Optional[List[FilmPeopleApi]]
     actors_names: Optional[List[str]]
@@ -50,7 +50,7 @@ class Film(OrjsonModel):
     uuid: UUID
     title: str
     imdb_rating: float
-    description: str
+    description: Optional[str]
     genres: List[dict]
     actors: Optional[List[dict]]
     actors_names: Optional[List[str]]
