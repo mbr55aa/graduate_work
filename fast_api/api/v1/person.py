@@ -57,7 +57,7 @@ async def person_list(
         person_service: PersonService = Depends(get_person_service)
 ) -> List[PersonBriefAPI]:
     """Функция, возвращающая список всех людей"""
-    logger.bedug(f"Получили параметры {sort=}-{type(sort)}, {filter_film=}-{type(filter_film)},"
+    logger.debug(f"Получили параметры {sort=}-{type(sort)}, {filter_film=}-{type(filter_film)},"
                  f" {page_size=}-{type(page_size)}, {page_number=}-{type(page_number)}")
     persons = await person_service.get_list(filter_film, filter_name, sort, page_size, page_number)
     if not persons:

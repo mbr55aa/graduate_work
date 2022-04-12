@@ -36,3 +36,7 @@ class PersonAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'birth_date')
     search_fields = ('full_name',)
     fields = ('full_name', 'birth_date')
+
+
+admin.site.site_title = 'Django Movies'
+admin.site.site_header = 'Django Movies'
