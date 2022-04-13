@@ -1,0 +1,44 @@
+root:
+    $Find? $Top $Films
+    $Find $Films
+    $Find $Top? $Genre
+    $Top $Genre
+    $Next $Next*
+
+slots:
+    genre:
+        source: $Genre
+        type: EGenres
+    next:
+        source: $Next
+
+$Next:
+    %lemma
+    дальше
+    еще
+    продолжай
+    следующие
+
+$Genre:
+    %lemma
+    $EGenres
+
+$Find:
+    %lemma
+    найди
+    подскажи
+    порекомендуй
+    назови
+    выдай
+
+$Top:
+    %lemma
+    лучшие
+    рейтинг
+    топ
+
+$Films:
+    %lemma
+    фильмы
+    кино
+    картины

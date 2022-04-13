@@ -1,7 +1,11 @@
 root:
-    $Find? $Info? (о|про)? $What $Film
-    $Info (о|про)? $What? $Film?
-    $Find (о|про)? $What $Film?
+    $Find? $Info? $What $Film
+    $Info $What? $Film?
+    $Find $What $Film?
+    $Find $About $What?
+    $Find $Film
+    %negative
+    $Find $Person $Film
 
 slots:
     film:
@@ -14,8 +18,8 @@ $Find:
     %lemma
     найди
     поищи
-    скажи
-    расскажи
+    скажи (о|про)+ этот?
+    расскажи (о|про)+ этот?
 
 $Info:
     %lemma
@@ -27,3 +31,13 @@ $What:
     фильм
     кино
     сериал
+
+$About:
+    %lemma
+    о нем
+    про него
+
+$Person:
+    %lemma
+    режиссера
+    актера
