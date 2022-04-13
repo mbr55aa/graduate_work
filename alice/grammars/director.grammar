@@ -1,5 +1,5 @@
 root:
-    [$Director $Of? $Film]
+    [$Find? $Director $Of? $Film]
     $Ellipsis
 
 slots:
@@ -10,10 +10,11 @@ filler:
     алиса
 
 $Ellipsis:
-    $LeftFiller [$Director]
+    $LeftFiller [$Director $This?]
 
 $LeftFiller:
     а
+
 $Film:
     .+
 
@@ -24,6 +25,18 @@ $Of:
 
 $Director:
     %lemma
-    кто снял
+    кто? снял
     кто? автор
     кто? режиссер
+
+$Find:
+    %lemma
+    назови
+    подскажи
+    поищи
+
+$This:
+    %lemma
+    этого фильма
+    его
+    это
