@@ -28,7 +28,7 @@ ACTORS = [
     "В фильме $film снимались $actors",
 ]
 
-FILM_DESCRIPTION = "$film. $description. Рейтинг $rating. "
+FILM_DESCRIPTION = "$film. $genre. $description. Рейтинг $rating. "
 
 
 def get_phrase(phrase: Union[List, str], **kwargs) -> str:

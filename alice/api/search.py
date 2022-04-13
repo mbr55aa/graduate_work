@@ -34,8 +34,10 @@ class SearchConnector:
             return None, None
         return film.title, ", ".join(film.actors_names[:limit])
 
-    def find_top_films(self, page: int = 1) -> Optional[List[FilmBase]]:
-        films = self._find_films(genre_id=None, page=page)
+    def find_top_films(
+        self, genre_id: Optional[UUID], page: int = 1
+    ) -> Optional[List[FilmBase]]:
+        films = self._find_films(genre_id=genre_id, page=page)
         return films
 
     def _find_film_uuid(self, search_str: str) -> Optional[UUID]:
@@ -65,7 +67,7 @@ class SearchConnector:
         response = self._get_response(
             "film/",
             query={
-                "genre": genre_id,
+                "filter[genre]": genre_id,
                 "page[size]": size,
                 "page[number]": page,
             },

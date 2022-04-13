@@ -56,8 +56,9 @@ def get_film(form, current_state) -> Optional[Film]:
         get_phrase(
             phrases.FILM_DESCRIPTION,
             film=film.title,
-            rating=film.imdb_rating,
+            genre=", ".join([genre.name for genre in film.genre]) if film.genre else "",
             description=film.description,
+            rating=film.imdb_rating,
         ),
         current_state,
     )
@@ -91,16 +92,29 @@ def get_actor(form, current_state):
 
 
 def get_films(form, current_state):
-    """Ищет топ фильмов, возможно по жанрам."""
-    # api_req = {
-    #     "film": form["slots"].get("film", {}).get("value"),
-    # }
-    # api_req = {k: v for k, v in api_req.items() if v}
-    # current_state.update(api_req)
+    """Ищет топ фильмов, фильмы по жанрам."""
+    is_next = form["slots"].get("next", {}).get("value")
 
-    films = api.find_top_films(page=1)
+    if is_next:
+        if "page" not in current_state:
+            return (
+                "Попросите меня найти лучшие фильмы или картины определенного жанра",
+                current_state,
+            )
+        current_state["page"] += 1
+    else:
+        api_req = {
+            "genre": form["slots"].get("genre", {}).get("value"),
+        }
+        # api_req = {k: v for k, v in api_req.items() if v}
+        current_state.update({**api_req, "page": 1})
+
+    films = api.find_top_films(
+        genre_id=current_state.get("genre"), page=current_state["page"]
+    )
+
     if not films:
-        return "Я не смогла найти фильмы", current_state
+        return "Я не смогла найти ни одного фильма", current_state
 
     return (
         ". ".join(
@@ -110,7 +124,16 @@ def get_films(form, current_state):
     )
 
 
-# if __name__ == "__main__":
-#     print(get_film({"slots": {"film": {"value": "Брат"}}}, {}))
-#     print(get_director({"slots": {"film": {"value": "Брат"}}}, {}))
-#     print(get_actor({"slots": {"film": {"value": "Брат"}}}, {}))
+if __name__ == "__main__":
+    # print(get_film({"slots": {"film": {"value": "Брат"}}}, {}))
+    # print(get_director({"slots": {"film": {"value": "Брат"}}}, {}))
+    # print(get_actor({"slots": {"film": {"value": "Брат"}}}, {}))
+    state = {}
+    print(
+        get_films(
+            {"slots": {"genre": {"value": "03caf522-1ab4-4785-aba7-bbecb70d8963"}}},
+            state,
+        )
+    )
+    print(get_films({"slots": {"next": {"value": "1"}}}, state))
+    print(get_films({"slots": {"next": {"value": "1"}}}, state))
