@@ -7,11 +7,8 @@ slots:
     film:
         source: $Film
 
-filler:
-    алиса
-
 $Ellipsis:
-    $LeftFiller кто? [$Director $This?]
+    $LeftFiller? кто? [$Director $This?]
 
 $LeftFiller:
     а

@@ -6,11 +6,8 @@ slots:
     film:
         source: $Film
 
-filler:
-    алиса
-
 $Ellipsis:
-    $LeftFiller [$Actor $This?]
+    $LeftFiller? [$Actor $This?]
 
 $LeftFiller:
     а
