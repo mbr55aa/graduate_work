@@ -106,7 +106,6 @@ def get_films(form, current_state):
         api_req = {
             "genre": form["slots"].get("genre", {}).get("value"),
         }
-        # api_req = {k: v for k, v in api_req.items() if v}
         current_state.update({**api_req, "page": 1})
 
     films = api.find_top_films(
@@ -116,24 +115,41 @@ def get_films(form, current_state):
     if not films:
         return "Я не смогла найти ни одного фильма", current_state
 
+    film_names = ". ".join(
+        [film.title + ", рейтинг " + str(film.imdb_rating) for film in films]
+    )
+
     return (
-        ". ".join(
-            [film.title + ", рейтинг " + str(film.imdb_rating) for film in films]
-        ),
+        get_phrase(phrases.FILMS, film=film_names)
+        if current_state["page"] == 1
+        else film_names,
         current_state,
     )
 
 
-if __name__ == "__main__":
-    # print(get_film({"slots": {"film": {"value": "Брат"}}}, {}))
-    # print(get_director({"slots": {"film": {"value": "Брат"}}}, {}))
-    # print(get_actor({"slots": {"film": {"value": "Брат"}}}, {}))
-    state = {}
-    print(
-        get_films(
-            {"slots": {"genre": {"value": "03caf522-1ab4-4785-aba7-bbecb70d8963"}}},
-            state,
+def get_person(form, current_state):
+    """Ищет персону и его фильмы."""
+    api_req = {
+        "person": form["slots"].get("person", {}).get("value"),
+    }
+    api_req = {k: v for k, v in api_req.items() if v}
+    current_state.update(api_req)
+
+    if "person" not in current_state:
+        return "Я не смогла понять о ком идет речь", current_state
+
+    person_name, film_names = api.find_person_films(current_state["person"])
+
+    if not person_name:
+        return "Я не смогла найти никого с таким именем", current_state
+
+    if not film_names:
+        return (
+            "К сожалению, я не нашла фильмов с участием " + person_name,
+            current_state,
         )
+
+    return (
+        get_phrase(phrases.PERSON, person=person_name, film=film_names),
+        current_state,
     )
-    print(get_films({"slots": {"next": {"value": "1"}}}, state))
-    print(get_films({"slots": {"next": {"value": "1"}}}, state))
