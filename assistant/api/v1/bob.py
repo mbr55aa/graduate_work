@@ -2,6 +2,7 @@
 
 from http import HTTPStatus
 import logging
+from pydantic import BaseModel
 
 from flask import Blueprint, jsonify, request
 
@@ -35,4 +36,6 @@ def api_request():
         return jsonify({"error": "Not found"}), HTTPStatus.NOT_FOUND
 
     logger.debug(f"Returning result '{result}'")
+    if isinstance(result, BaseModel):
+        result = result.dict()
     return jsonify(result), HTTPStatus.OK
