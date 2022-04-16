@@ -1,0 +1,47 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Сервис Assistant"
+  description: "Поиск информации о фильмах"
+basePath: "/api/v1/bob/"
+tags:
+- name: "Movies"
+  description: "Поиск информации о фильмах"
+schemes:
+- "http"
+paths:
+  /:
+    get:
+      summary: "Контроллер вызывает запрошенный метод класса SearchConnector"
+      description: "Пробует вызвать метод класса SearchConnector, проверяет есть ли такой метод, если есть вызывает и возвращает результат"
+      operationId: "Search"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: query
+        name: "method"
+        description: "Метод который хотим вызвать"
+        required: true
+        schema:
+          type: "string"
+      - in: query
+        name: "query"
+        description: "Строка запроса"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "Ок, выдаем информацию в виде JSON"
+          schema:
+            type: object
+            items:
+              $ref: "#/definitions/Response"
+
+definitions:
+  Response:
+    properties:
+      status:
+

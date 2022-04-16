@@ -48,6 +48,7 @@ $ make down
   - название папки с моделью добавить в .env файл проекта в переменную `VOSK_MODEL`
 
 # Взаимодействие
+- Доступ к документации Assistant осуществляется через http://localhost:8001/apidocs/
 - Доступ к документации FastAPI осуществляется через http://localhost:8000/api/openapi
 - Доступ к админке Django осуществляется через http://localhost/admin/ (user admin, password 123456)
 
