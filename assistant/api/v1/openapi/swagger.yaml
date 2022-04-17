@@ -22,26 +22,47 @@ paths:
       parameters:
       - in: query
         name: "method"
-        description: "Метод который хотим вызвать"
+        description: "Метод который хотим вызвать, например: find_film_directors"
         required: true
         schema:
           type: "string"
       - in: query
         name: "query"
-        description: "Строка запроса"
+        description: "Строка запроса, например: новая надежда"
         required: true
         schema:
           type: "string"
       responses:
         "200":
-          description: "Ок, выдаем информацию в виде JSON"
-          schema:
-            type: object
-            items:
-              $ref: "#/definitions/Response"
+          description: "OK, информация в виде JSON"
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: "BAD REQUEST, нехватает необходимых параметров"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: "NOT FOUND, по указанным ключевым словам ничего найти не удалось"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "501":
+          description: "NOT IMPLEMENTED, данный метод не реализован в классе поиска"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
-definitions:
-  Response:
-    properties:
-      status:
-
+components:
+  schemas:
+    # Schema for error response body
+    Error:
+      type: object
+      properties:
+        error:
+          type: 'string'
