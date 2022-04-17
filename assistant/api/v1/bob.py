@@ -18,6 +18,10 @@ sc = SearchConnector()
 
 @blueprint_bob.route("/", methods=["GET"])
 def api_request():
+    """
+    Handle GET request, validate it, try to find required method of SearchConnector, execute it and return response
+    @return: JSON with requested data
+    """
     method = request.args.get('method')
     query = request.args.get('query')
     if not method or not query:
@@ -35,7 +39,7 @@ def api_request():
     if not result:
         return jsonify({"error": "Not found"}), HTTPStatus.NOT_FOUND
 
-    logger.debug(f"Returning result '{result}'")
     if isinstance(result, BaseModel):
         result = result.dict()
+    logger.debug(f"Returning result '{result}'")
     return jsonify(result), HTTPStatus.OK
