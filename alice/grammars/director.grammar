@@ -1,16 +1,14 @@
 root:
-    [$Find? $Director $Of? $Film]
+    $Find? $Director $Of? $Film
+    $Find? $Director $This? $Of
     $Ellipsis
 
 slots:
     film:
         source: $Film
 
-filler:
-    алиса
-
 $Ellipsis:
-    $LeftFiller [$Director $This?]
+    $LeftFiller? кто? [$Director $This?]
 
 $LeftFiller:
     а
@@ -25,9 +23,9 @@ $Of:
 
 $Director:
     %lemma
-    кто? (его|ее)? снял
     кто? автор
     кто? режиссер
+    кто? снял
 
 $Find:
     %lemma
@@ -40,3 +38,4 @@ $This:
     этого фильма
     его
     это
+    этот

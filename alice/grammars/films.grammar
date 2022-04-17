@@ -1,9 +1,12 @@
 root:
     $Find? $Top $Films
     $Find $Films
+    $Find $Top
+    $Find $Films $Top
+    $Find $Films $Genre
     $Find $Top? $Genre
-    $Top $Genre
-    $Next $Next*
+    $Find? [$Top $Genre]
+    а? $Next $Next*
 
 slots:
     genre:
@@ -14,20 +17,23 @@ slots:
 
 $Next:
     %lemma
-    дальше
-    еще
     продолжай
     следующие
+    дальше
+    еще
 
 $Genre:
     %lemma
-    $EGenres
+    (из жанра|в жанре)? $EGenres
 
 $Find:
     %lemma
-    найди
-    подскажи
+    у какого фильма
+    какие ты знаешь
     порекомендуй
+    посоветуй
+    подскажи
+    найди
     назови
     выдай
 
@@ -36,6 +42,8 @@ $Top:
     лучшие
     рейтинг
     топ
+    самый? высокий рейтинг
+    с самым? высоким рейтингом
 
 $Films:
     %lemma

@@ -1,12 +1,12 @@
 """Implements connector to Movie Async API for search info about movies, people, genres."""
 
 from http import HTTPStatus
-from typing import List, Optional
+from typing import List, Optional, Tuple
 from uuid import UUID
 
 import requests
 
-from .models import Film, FilmBase, Genre
+from .models import Film, FilmBase, Person
 
 
 class SearchConnector:
@@ -22,13 +22,17 @@ class SearchConnector:
         film = self._get_film_by_uuid(film_uuid)
         return film
 
-    def find_film_directors(self, search_str: str):
+    def find_film_directors(
+        self, search_str: str
+    ) -> Tuple[Optional[str], Optional[str]]:
         film = self.find_film_data(search_str)
         if not film:
             return None, None
         return film.title, ", ".join(film.directors_names)
 
-    def find_film_actors(self, search_str: str, limit: int = 5):
+    def find_film_actors(
+        self, search_str: str, limit: int = 5
+    ) -> Tuple[Optional[str], Optional[str]]:
         film = self.find_film_data(search_str)
         if not film:
             return None, None
@@ -39,6 +43,24 @@ class SearchConnector:
     ) -> Optional[List[FilmBase]]:
         films = self._find_films(genre_id=genre_id, page=page)
         return films
+
+    def find_film_directors(
+        self, search_str: str
+    ) -> Tuple[Optional[str], Optional[str]]:
+        film = self.find_film_data(search_str)
+        if not film:
+            return None, None
+        return film.title, ", ".join(film.directors_names)
+
+    def find_person_films(self, search_str: str) -> Tuple[Optional[str], Optional[str]]:
+        person = self._find_person(search_str)
+        if not person:
+            return None, None
+
+        films = self._get_films_by_person_uuid(person.uuid)
+        film_names = ", ".join(film.title for film in films) if films else None
+
+        return person.full_name, film_names
 
     def _find_film_uuid(self, search_str: str) -> Optional[UUID]:
         response = self._get_response(
@@ -62,7 +84,7 @@ class SearchConnector:
         return Film(**response.json())
 
     def _find_films(
-        self, genre_id: Optional[UUID], page: int = 1, size: int = 5
+        self, genre_id: Optional[UUID], page: int = 1, size: int = 3
     ) -> Optional[List[FilmBase]]:
         response = self._get_response(
             "film/",
@@ -77,15 +99,31 @@ class SearchConnector:
 
         return [FilmBase(**row) for row in response.json()]
 
-    def _find_genres(self, page: int = 1, size: int = 100) -> Optional[List[Genre]]:
+    def _find_person(self, search_str: str) -> Optional[Person]:
         response = self._get_response(
-            "genre/",
+            "person/",
             query={
-                "page[size]": size,
-                "page[number]": page,
+                "search[name]": search_str,
+                "page[size]": 1,
+                "page[number]": 1,
             },
         )
         if response.status_code != HTTPStatus.OK:
             return None
 
-        return [Genre(**row) for row in response.json()]
+        return Person(**response.json()[0])
+
+    def _get_films_by_person_uuid(self, person_uuid: UUID) -> Optional[List[Film]]:
+        response = self._get_response(f"person/{person_uuid}")
+        if response.status_code != HTTPStatus.OK:
+            return None
+
+        film_ids = response.json()["film_ids"][:5]
+        films = []
+
+        for film_id in film_ids:
+            film = self._get_film_by_uuid(film_id)
+            if film:
+                films.append(film)
+
+        return films
