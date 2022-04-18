@@ -30,10 +30,7 @@ def api_request():
     if not method_to_call:
         return jsonify({"error": "Not implemented"}), HTTPStatus.NOT_IMPLEMENTED
 
-    try:
-        result = method_to_call(query)
-    except KeyError:
-        result = None  # todo Not longer required - delete
+    result = method_to_call(query)
     if not result:
         return jsonify({"error": "Not found"}), HTTPStatus.NOT_FOUND
 
