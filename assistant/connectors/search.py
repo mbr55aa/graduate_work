@@ -29,17 +29,17 @@ class SearchConnector:
 
     def find_film_title(self, search_str: str) -> str:
         film = self.find_film_data(search_str)
-        return film['title']
+        return getattr(film, 'title', None)
 
     def find_film_rating(self, search_str: str) -> str:
         film = self.find_film_data(search_str)
-        return film['imdb_rating']
+        return getattr(film, 'imdb_rating', None)
 
     def find_film_genres(self, search_str: str) -> List[str]:
         film = self.find_film_data(search_str)
         genres_names = []
-        for genre in film['genre']:
-            genres_names.append(genre['name'])
+        for genre in getattr(film, 'genre', []):
+            genres_names.append(genre.name)
         return genres_names
 
     def find_film_directors(self, search_str: str) -> List[str]:
@@ -62,7 +62,7 @@ class SearchConnector:
 
     def find_film_description(self, search_str: str) -> List[str]:
         film = self.find_film_data(search_str)
-        return film['description']
+        return getattr(film, 'description', None)
 
     def find_film_writers(self, search_str: str) -> List[str]:
         """
