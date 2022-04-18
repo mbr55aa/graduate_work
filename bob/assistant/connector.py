@@ -50,7 +50,7 @@ def get_filmwork_name_from_api(filmwork_name: str) -> Optional[str]:
     :return: Корректное имя или None.
     """
     filmwork_name_resp = get_response(
-        f'{ASSISTANT_URL}/api/v1/bob?method=find_film_title&query={filmwork_name}'
+        f'{ASSISTANT_URL}?method=find_film_title&query={filmwork_name}'
     )
     if filmwork_name_resp:
         return filmwork_name_resp.json()
@@ -130,7 +130,7 @@ def search_director(synthesizer: SpeechSynthesis, *args: tuple) -> None:
     :return: None
     """
     filmwork_name, filmwork_type = get_film_name(args[0])
-    response = get_response(f'{ASSISTANT_URL}/api/v1/bob?method=find_film_directors&query={filmwork_name}')
+    response = get_response(f'{ASSISTANT_URL}?method=find_film_directors&query={filmwork_name}')
     synthesizer.play_voice_assistant_speech(f'Ищу режиссера {filmwork_type}а {filmwork_name}')
     play_response(synthesizer, 'Режиссёр', response, filmwork_name, filmwork_type)
     # synthesizer.play_voice_assistant_speech(f'Ищу режиссера')
@@ -144,7 +144,7 @@ def search_writer(synthesizer: SpeechSynthesis, *args: tuple) -> None:
     :return: None
     """
     filmwork_name, filmwork_type = get_film_name(args[0])
-    response = get_response(f'{ASSISTANT_URL}/api/v1/bob?method=find_film_writers&query={filmwork_name}')
+    response = get_response(f'{ASSISTANT_URL}?method=find_film_writers&query={filmwork_name}')
     synthesizer.play_voice_assistant_speech(f'Ищу Сценариста {filmwork_type}а {filmwork_name}')
     play_response(synthesizer, 'Сценарист', response, filmwork_name, filmwork_type)
     # synthesizer.play_voice_assistant_speech(f'Ищу Сценариста')
@@ -158,7 +158,7 @@ def search_actor(synthesizer: SpeechSynthesis, *args: tuple) -> None:
     :return: None
     """
     filmwork_name, filmwork_type = get_film_name(args[0])
-    response = get_response(f'{ASSISTANT_URL}/api/v1/bob?method=find_film_actors&query={filmwork_name}')
+    response = get_response(f'{ASSISTANT_URL}?method=find_film_actors&query={filmwork_name}')
     synthesizer.play_voice_assistant_speech(f'Ищу Актёров {filmwork_type}а {filmwork_name}')
     play_response(synthesizer, 'Актёры', response, filmwork_name, filmwork_type)
     # synthesizer.play_voice_assistant_speech(f'Ищу Актёров')
@@ -172,7 +172,7 @@ def search_description(synthesizer: SpeechSynthesis, *args: tuple) -> None:
     :return: None
     """
     filmwork_name, filmwork_type = get_film_name(args[0])
-    response = get_response(f'{ASSISTANT_URL}/api/v1/bob?method=find_film_description&query={filmwork_name}')
+    response = get_response(f'{ASSISTANT_URL}?method=find_film_description&query={filmwork_name}')
     synthesizer.play_voice_assistant_speech(f'Ищу описание {filmwork_type}а {filmwork_name}')
     play_response(synthesizer, 'Описание', response, filmwork_name, filmwork_type)
     # synthesizer.play_voice_assistant_speech(f'Ищу описание')
@@ -186,7 +186,7 @@ def search_rating(synthesizer: SpeechSynthesis, *args: tuple) -> None:
     :return: None
     """
     filmwork_name, filmwork_type = get_film_name(args[0])
-    response = get_response(f'{ASSISTANT_URL}/api/v1/bob?method=find_film_rating&query={filmwork_name}')
+    response = get_response(f'{ASSISTANT_URL}?method=find_film_rating&query={filmwork_name}')
     synthesizer.play_voice_assistant_speech(f'Ищу рейтинг {filmwork_type}а {filmwork_name}')
     play_response(synthesizer, 'Рейтинг', response, filmwork_name, filmwork_type)
     # synthesizer.play_voice_assistant_speech(f'Ищу рейтинг')
@@ -200,7 +200,7 @@ def search_genres(synthesizer: SpeechSynthesis, *args: tuple) -> None:
     :return: None
     """
     filmwork_name, filmwork_type = get_film_name(args[0])
-    response = get_response(f'{ASSISTANT_URL}/api/v1/bob?method=find_film_genres&query={filmwork_name}')
+    response = get_response(f'{ASSISTANT_URL}?method=find_film_genres&query={filmwork_name}')
     synthesizer.play_voice_assistant_speech(f'Ищу жанры {filmwork_type}а {filmwork_name}')
     play_response(synthesizer, 'Жанры', response, filmwork_name, filmwork_type)
     # synthesizer.play_voice_assistant_speech(f'Ищу жанры')
