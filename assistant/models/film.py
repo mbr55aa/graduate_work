@@ -26,6 +26,3 @@ class Film(BaseModel):
     writers: Optional[List[FilmPeople]]
     writers_names: Optional[List[str]]
     directors_names: Optional[List[str]]
-
-    def __getitem__(self, item):
-        return item
