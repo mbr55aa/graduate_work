@@ -1,10 +1,10 @@
 """Содержит тесты для жанров"""
 
+import json
 import os
 from http import HTTPStatus
 
 import aiohttp
-import json
 import pytest
 
 # Строка с именем хоста и портом

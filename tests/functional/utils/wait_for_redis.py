@@ -9,8 +9,9 @@ import logging
 from time import sleep
 
 import requests
-from redis import Redis
 from settings import TestSettings
+
+from redis import Redis
 
 redis_host = TestSettings().redis_host
 redis_port = TestSettings().redis_port
