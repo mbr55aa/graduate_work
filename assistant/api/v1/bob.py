@@ -4,10 +4,8 @@ from http import HTTPStatus
 import logging
 from pydantic import BaseModel
 
-from flask import Blueprint, jsonify, request
-
 from connectors.search import SearchConnector
-
+from flask import Blueprint, jsonify, request
 
 logger = logging.getLogger(__name__)
 

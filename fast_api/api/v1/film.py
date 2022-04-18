@@ -26,9 +26,8 @@ from http import HTTPStatus
 from typing import List, Literal, Optional
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query
-
 from core.config import ErrorMessage
+from fastapi import APIRouter, Depends, HTTPException, Query
 from models.film import FilmApi, FilmBriefApi, FilmGenreApi, FilmPeopleApi
 from services.film import FilmService, get_film_service
 

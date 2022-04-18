@@ -1,7 +1,7 @@
+import logging
 from functools import lru_cache
 from typing import List, Optional
 from uuid import UUID
-import logging
 
 import orjson
 from db.cache import MemoryCache, get_cache
@@ -9,7 +9,6 @@ from db.storage import AbstractStorage, get_storage
 from fastapi import Depends
 from models.film import Film, FilmBrief
 from services.abstract import AbstractService
-
 
 logger = logging.getLogger(__name__)
 

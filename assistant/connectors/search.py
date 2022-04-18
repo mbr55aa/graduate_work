@@ -27,6 +27,21 @@ class SearchConnector:
         film = self._get_film_by_uuid(film_uuid)
         return film
 
+    def find_film_title(self, search_str: str) -> str:
+        film = self.find_film_data(search_str)
+        return getattr(film, 'title', None)
+
+    def find_film_rating(self, search_str: str) -> str:
+        film = self.find_film_data(search_str)
+        return getattr(film, 'imdb_rating', None)
+
+    def find_film_genres(self, search_str: str) -> List[str]:
+        film = self.find_film_data(search_str)
+        genres_names = []
+        for genre in getattr(film, 'genre', None):
+            genres_names.append(genre['name'])
+        return genres_names
+
     def find_film_directors(self, search_str: str) -> List[str]:
         """
         Find directors(s) of the requested film
@@ -44,6 +59,10 @@ class SearchConnector:
         """
         film = self.find_film_data(search_str)
         return getattr(film, 'actors_names', None)
+
+    def find_film_description(self, search_str: str) -> List[str]:
+        film = self.find_film_data(search_str)
+        return getattr(film, 'description', None)
 
     def find_film_writers(self, search_str: str) -> List[str]:
         """

@@ -1,13 +1,13 @@
-import orjson
+from functools import lru_cache
+from typing import List, Optional
+from uuid import UUID
 
+import orjson
 from db.cache import MemoryCache, get_cache
 from db.storage import AbstractStorage, get_storage
 from fastapi import Depends
-from functools import lru_cache
 from models.genre import Genre, GenreBrief
 from services.abstract import AbstractService
-from typing import List, Optional
-from uuid import UUID
 
 
 class GenreService(AbstractService):

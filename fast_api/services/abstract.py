@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
+from typing import Optional
+
 from db.cache import MemoryCache
 from db.storage import AbstractStorage
 from models._base import OrjsonModel
-from typing import Optional
 
 
 class AbstractService(ABC):

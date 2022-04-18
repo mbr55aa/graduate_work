@@ -2,9 +2,9 @@ import logging
 from datetime import datetime
 from typing import List, Set
 
-from db.pg_loader import PGLoader
 from db.es_saver import ESSaver
-from state import State, JsonFileStorage
+from db.pg_loader import PGLoader
+from state import JsonFileStorage, State
 
 logger = logging.getLogger(__name__)
 

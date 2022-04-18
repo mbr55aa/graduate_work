@@ -3,9 +3,8 @@ from http import HTTPStatus
 from typing import List, Literal, Optional
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query
-
 from core.config import ErrorMessage
+from fastapi import APIRouter, Depends, HTTPException, Query
 from models.person import PersonAPI, PersonBriefAPI
 from services.person import PersonService, get_person_service
 

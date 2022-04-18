@@ -3,14 +3,14 @@ import logging
 import os
 from logging import config as logger_conf
 
-from core.log_config import LOGGING
-from assistant.speech_synthesis import SpeechSynthesis
-from recorder.recognaizer import Recognaizer
-from assistant.commands import config as commands
-
-from termcolor import colored
 from classifier.classifier import Classifier
+from core.log_config import LOGGING
+from recorder.recognaizer import Recognaizer
+from termcolor import colored
+
+from assistant.commands import config as commands
 from assistant.connector import play_intro
+from assistant.speech_synthesis import SpeechSynthesis
 
 logger_conf.dictConfig(LOGGING)
 logger = logging.getLogger(__name__)

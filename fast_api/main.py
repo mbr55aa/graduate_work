@@ -2,14 +2,13 @@ import logging
 
 import aioredis
 import uvicorn
-from elasticsearch import AsyncElasticsearch
-from fastapi import FastAPI
-from fastapi.responses import ORJSONResponse
-
 from api.v1 import film, genre, person
 from core import config
 from core.logger import LOGGING
-from db import storage, cache
+from db import cache, storage
+from elasticsearch import AsyncElasticsearch
+from fastapi import FastAPI
+from fastapi.responses import ORJSONResponse
 
 tags_metadata = [
     {

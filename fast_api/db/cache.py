@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
+from typing import Optional
+
 from aioredis import Redis
 from fastapi import Depends
-from typing import Optional
 
 redis: Optional[Redis] = None
 
