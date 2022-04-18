@@ -1,3 +1,6 @@
+# Репозиторий
+[https://github.com/mbr55aa/graduate_work](https://github.com/mbr55aa/graduate_work)
+
 # Техническое Задание
 [ссылка](https://docs.google.com/document/d/1TBbOgtxxFOSANF7Od0uXKds1nT56b6RrfJuaCQw-IpU)
 
@@ -16,7 +19,7 @@ $ make down
 ```
 
 ## Настройка Postgres
-- Добавление файлов БД. Создайте в корне проекта папку pgdata, и поместите туда файлы БД (можно использовать вот [эти](https://drive.google.com/file/d/1INh4uMXfcJfNXhisvVBWrJ_kDNxFoziT/view?usp=sharing))
+- Добавление файлов БД. Создайте в корне проекта папку pgdata, и поместите туда файлы БД (можно использовать вот [эти](https://drive.google.com/file/d/134lPr53ckFRPhupPFg7QB71fIVpv5PKz/view?usp=sharing))
 
 - Восстановление БД из дампа:
   1. Скачайте файл [db.dump](https://drive.google.com/file/d/1m7xdEP368F4tEaXireX7QOVUMbtzkFvc/view?usp=sharing)
@@ -48,7 +51,14 @@ $ make down
   - название папки с моделью добавить в .env файл проекта в переменную `VOSK_MODEL`
 
 # Взаимодействие
-- Доступ к документации Assistant осуществляется через http://localhost:8001/apidocs/
-- Доступ к документации FastAPI осуществляется через http://localhost:8000/api/openapi
-- Доступ к админке Django осуществляется через http://localhost/admin/ (user admin, password 123456)
+## Облачный инстанс
+- Документация Assistant: http://51.250.26.192:8001/apidocs/
+- Assistant API: http://51.250.26.192:8001/api/v1/bob/
+- Документация FastAPI: http://51.250.26.192:8000/api/openapi
+- Админка Django: http://51.250.26.192/admin/ (user admin, password 123456)
 
+## Локальный инстанс
+- Документация Assistant: http://localhost:8001/apidocs/
+- Assistant API: http://localhost:8001/api/v1/bob/
+- Документация FastAPI: http://localhost:8000/api/openapi
+- Админка Django: http://localhost/admin/ (user admin, password 123456)
