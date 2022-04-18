@@ -1,8 +1,9 @@
 """Класс классификатор зпросов."""
+import logging
+
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import LinearSVC
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -48,6 +49,9 @@ class Classifier:
         probabilities = self.classifier_probability.predict_proba(self.vectorizer.transform([request]))[0]
 
         best_intent_probability = probabilities[index_of_best_intent]
+        logger.info(f'{request}:{best_intent_probability}')
         # при добавлении новых намерений стоит уменьшать этот показатель
-        if best_intent_probability > 0.31:
+        if best_intent_probability > 0.282:
+            logger.info(f'Выбрал {best_intent}')
             return best_intent
+        # return best_intent_probability

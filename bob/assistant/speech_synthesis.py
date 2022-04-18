@@ -1,8 +1,10 @@
 """Класс синтеза речи"""
-import pyttsx3  # синтез речи (Text-To-Speech)
-from assistant.voice_assistant import VoiceAssistant
 import logging
+
+import pyttsx3  # синтез речи (Text-To-Speech)
 from termcolor import colored
+
+from assistant.voice_assistant import VoiceAssistant
 
 logger = logging.getLogger(__name__)
 

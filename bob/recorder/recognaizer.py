@@ -7,10 +7,9 @@ import wave
 from typing import Optional
 
 import speech_recognition
+from core.config import VOSK_MODEL
 from termcolor import colored
-from vosk import Model, KaldiRecognizer
-
-from bob.core.config import VOSK_MODEL
+from vosk import KaldiRecognizer, Model
 
 logger = logging.getLogger(__name__)
 
@@ -23,24 +22,36 @@ class Recognaizer:
 
     def __init__(self):
         """Функция инициализации экземпляра класса."""
-        # инициализация инструментов распознавания и ввода речи
         self.recognizer = speech_recognition.Recognizer()
         self.microphone = speech_recognition.Microphone()
 
-    def use_offline_recognition(self) -> str:
+    @staticmethod
+    def get_model() -> Model:
         """
-        Переключение на оффлайн-распознавание речи
-        :return: распознанная фраза
+        Считывание модели на нужном языке из каталога приложения.
+        return: Model
         """
-        recognized_data = ""
-        # проверка наличия модели на нужном языке в каталоге приложения
         if not os.path.exists(f'models/{VOSK_MODEL}'):
             print(colored("Please download the model from:\n"
                           "https://alphacephei.com/vosk/models and unpack as 'model' in the current folder.",
                           "red"))
-            exit(1)
+            raise FileNotFoundError
 
-        model = Model(f'models/{VOSK_MODEL}')
+        return Model(f'models/{VOSK_MODEL}')
+
+    @staticmethod
+    def use_offline_recognition() -> str:
+        """
+        Переключение на оффлайн-распознавание речи
+        :return: распознанная фраза
+        """
+        recognized_data: str = ''
+        model: Optional[Model] = None
+
+        try:
+            model = Recognaizer.get_model()
+        except FileNotFoundError:
+            exit(1)
 
         try:
             # анализ записанного в микрофон аудио (чтобы избежать повторов фразы)
@@ -51,8 +62,8 @@ class Recognaizer:
                 if offline_recognizer.AcceptWaveform(data):
                     recognized_data = offline_recognizer.Result()
                     # получение данных распознанного текста из JSON-строки (чтобы можно было выдать по ней ответ)
-                    recognized_data = json.loads(recognized_data)
-                    recognized_data = recognized_data['text']
+                    recognized_dict = json.loads(recognized_data)
+                    recognized_data = recognized_dict['text']
         except BaseException:
             logger.exception('Offline recognition exception')
             print(colored('Sorry, speech service is unavailable. Try again later', 'red'))
@@ -96,6 +107,6 @@ class Recognaizer:
             # в случае проблем с доступом в Интернет происходит попытка использовать offline-распознавание через Vosk
             except speech_recognition.RequestError:
                 print(colored('Trying to use offline recognition...', 'cyan'))
-                recognized_data = self.use_offline_recognition()
+                recognized_data = Recognaizer.use_offline_recognition()
 
             return recognized_data
