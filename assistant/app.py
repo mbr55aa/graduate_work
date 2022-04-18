@@ -1,6 +1,7 @@
 import logging
 from logging import config as logger_conf
 
+from flasgger import Swagger
 from flask import Flask
 
 from api.v1.alice import blueprint_alice
@@ -14,6 +15,8 @@ logger = logging.getLogger(__name__)
 
 
 app = Flask(__name__)
+
+swagger = Swagger(app, template_file="api/v1/openapi/swagger.yaml", parse=True)
 
 app.config['JSON_AS_ASCII'] = False
 
