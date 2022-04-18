@@ -38,8 +38,8 @@ class SearchConnector:
     def find_film_genres(self, search_str: str) -> List[str]:
         film = self.find_film_data(search_str)
         genres_names = []
-        for genre in getattr(film, 'genre', None):
-            genres_names.append(genre['name'])
+        for genre in getattr(film, 'genre', []):
+            genres_names.append(genre.name)
         return genres_names
 
     def find_film_directors(self, search_str: str) -> List[str]:
