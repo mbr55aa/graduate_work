@@ -5,17 +5,19 @@ from pydantic import BaseModel
 
 
 class FilmPeople(BaseModel):
+    """Информация о персоне."""
     uuid: UUID
     full_name: str
 
 
 class FilmGenre(BaseModel):
+    """Информация о жанре"""
     uuid: UUID
     name: str
 
 
 class Film(BaseModel):
-    """Подробная информация о фильме"""
+    """Подробная информация о фильме."""
     uuid: UUID
     title: str
     imdb_rating: float
