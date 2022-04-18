@@ -3,9 +3,8 @@ from http import HTTPStatus
 from typing import List, Literal, Optional
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query
-
 from core.config import ErrorMessage
+from fastapi import APIRouter, Depends, HTTPException, Query
 from models.genre import GenreAPI, GenreBriefAPI
 from services.genre import GenreService, get_genre_service
 
