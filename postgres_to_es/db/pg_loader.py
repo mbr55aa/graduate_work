@@ -3,7 +3,6 @@ import logging
 import psycopg2
 import psycopg2.extras
 from psycopg2 import DatabaseError
-
 from resources import backoff
 from settings.settings import Settings
 

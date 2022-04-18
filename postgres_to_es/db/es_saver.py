@@ -3,7 +3,6 @@ from typing import List
 
 import requests
 from elasticsearch import Elasticsearch, helpers
-
 from resources import backoff
 from settings.schemes import Schemes
 from settings.settings import Settings
