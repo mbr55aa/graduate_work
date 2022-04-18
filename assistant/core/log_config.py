@@ -1,3 +1,5 @@
+from core.config import LOG_LEVEL, LOG_FILE
+
 LOG_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 
 LOGGING = {
@@ -21,7 +23,7 @@ LOGGING = {
         'file': {
             'formatter': 'json',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': 'assistant.log',
+            'filename': LOG_FILE,
             'mode': 'a',
             'delay': '1',
             'maxBytes': 1000000,
@@ -30,7 +32,7 @@ LOGGING = {
     },
     'loggers': {
         'assistant': {
-            'level': 'ERROR',
+            'level': LOG_LEVEL,
             'handlers': [
                 'console',
                 'file',
@@ -38,7 +40,7 @@ LOGGING = {
         },
     },
     'root': {
-        'level': 'INFO',
+        'level': LOG_LEVEL,
         'handlers': [
             'console',
             'file',

@@ -1,12 +1,16 @@
 root:
-    [$Actor $Of? $Film]
+    $Find? [$Actor $Of? $Film]
+    $Ellipsis
 
 slots:
     film:
         source: $Film
 
-filler:
-    алиса
+$Ellipsis:
+    $LeftFiller? [$Actor $This?]
+
+$LeftFiller:
+    а
 
 $Film:
     .+
@@ -18,6 +22,20 @@ $Of:
 
 $Actor:
     %lemma
-    какие? актеры (играли|снимались)?
-    кто (снимался|играл)
-    кто главный? актер
+    какие? актеры $This? (играли|снимались)?
+    кто $This? (снимался|играл)
+    кто $This? главный? актер
+    (снимался|играл)
+
+$This:
+    %lemma
+    там
+    в нем
+    в ней
+    в этом фильме
+    в этом кино
+
+$Find:
+    назови
+    поищи
+    найди

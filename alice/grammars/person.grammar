@@ -1,0 +1,34 @@
+root:
+    [$Find? $Work $Person]
+
+slots:
+    person:
+        source: $Person
+
+$Person:
+    .+
+
+$What:
+    %lemma
+    какие фильмы
+    фильм? где
+    в каких фильмах
+    что
+    фильм? который
+
+$Work:
+    %lemma
+    $What участвовал
+    $What снимался
+    $What играл
+    $What снял
+
+$Find:
+    %lemma
+    порекомендуй
+    посоветуй
+    расскажи
+    подскажи
+    поищи
+    найди
+    скажи

@@ -56,8 +56,9 @@ def get_film(form, current_state) -> Optional[Film]:
         get_phrase(
             phrases.FILM_DESCRIPTION,
             film=film.title,
-            rating=film.imdb_rating,
+            genre=", ".join([genre.name for genre in film.genre]) if film.genre else "",
             description=film.description,
+            rating=film.imdb_rating,
         ),
         current_state,
     )
@@ -91,26 +92,64 @@ def get_actor(form, current_state):
 
 
 def get_films(form, current_state):
-    """Ищет топ фильмов, возможно по жанрам."""
-    # api_req = {
-    #     "film": form["slots"].get("film", {}).get("value"),
-    # }
-    # api_req = {k: v for k, v in api_req.items() if v}
-    # current_state.update(api_req)
+    """Ищет топ фильмов, фильмы по жанрам."""
+    is_next = form["slots"].get("next", {}).get("value")
 
-    films = api.find_top_films(page=1)
+    if is_next:
+        if "page" not in current_state:
+            return (
+                "Попросите меня найти лучшие фильмы или картины определенного жанра",
+                current_state,
+            )
+        current_state["page"] += 1
+    else:
+        api_req = {
+            "genre": form["slots"].get("genre", {}).get("value"),
+        }
+        current_state.update({**api_req, "page": 1})
+
+    films = api.find_top_films(
+        genre_id=current_state.get("genre"), page=current_state["page"]
+    )
+
     if not films:
-        return "Я не смогла найти фильмы", current_state
+        return "Я не смогла найти ни одного фильма", current_state
+
+    film_names = ". ".join(
+        [film.title + ", рейтинг " + str(film.imdb_rating) for film in films]
+    )
 
     return (
-        ". ".join(
-            [film.title + ", рейтинг " + str(film.imdb_rating) for film in films]
-        ),
+        get_phrase(phrases.FILMS, film=film_names)
+        if current_state["page"] == 1
+        else film_names,
         current_state,
     )
 
 
-# if __name__ == "__main__":
-#     print(get_film({"slots": {"film": {"value": "Брат"}}}, {}))
-#     print(get_director({"slots": {"film": {"value": "Брат"}}}, {}))
-#     print(get_actor({"slots": {"film": {"value": "Брат"}}}, {}))
+def get_person(form, current_state):
+    """Ищет персону и его фильмы."""
+    api_req = {
+        "person": form["slots"].get("person", {}).get("value"),
+    }
+    api_req = {k: v for k, v in api_req.items() if v}
+    current_state.update(api_req)
+
+    if "person" not in current_state:
+        return "Я не смогла понять о ком идет речь", current_state
+
+    person_name, film_names = api.find_person_films(current_state["person"])
+
+    if not person_name:
+        return "Я не смогла найти никого с таким именем", current_state
+
+    if not film_names:
+        return (
+            "К сожалению, я не нашла фильмов с участием " + person_name,
+            current_state,
+        )
+
+    return (
+        get_phrase(phrases.PERSON, person=person_name, film=film_names),
+        current_state,
+    )

@@ -21,7 +21,11 @@ app.register_blueprint(blueprint_bob)
 
 def main():
     logger.info('Starting')
-    app.run(debug=True, host=config.ALLOWED_HOSTS, port=8001)
+    app.run(
+        debug=True,
+        host=config.ALLOWED_HOSTS,
+        port=8001,
+    )
 
 
 if __name__ == '__main__':
