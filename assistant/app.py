@@ -1,13 +1,11 @@
 import logging
 from logging import config as logger_conf
 
-from flask import Flask
-
 from api.v1.alice import blueprint_alice
 from api.v1.bob import blueprint_bob
 from core import config
 from core.log_config import LOGGING
-
+from flask import Flask
 
 logger_conf.dictConfig(LOGGING)
 logger = logging.getLogger(__name__)

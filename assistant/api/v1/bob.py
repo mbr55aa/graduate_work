@@ -2,10 +2,8 @@
 
 from http import HTTPStatus
 
-from flask import Blueprint, jsonify, request
-
 from connectors.search import SearchConnector
-
+from flask import Blueprint, jsonify, request
 
 blueprint_bob = Blueprint(name="bob", url_prefix="/api/v1/bob", import_name=__name__)
 
