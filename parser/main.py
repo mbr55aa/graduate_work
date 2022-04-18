@@ -3,6 +3,7 @@ import time
 import postgres_loader as db
 from api_extractor import (get_film_by_id, get_person_by_film_id,
                            get_top_250_films)
+
 from config import logger
 
 
