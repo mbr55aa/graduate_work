@@ -31,6 +31,14 @@ class Film(BaseModel):
         return item
 
 
+class Genre(BaseModel):
+    uuid: UUID
+    name: str
+    description: Optional[str]
+    film_ids: List[str]
+    film_detailed_ids: Optional[List[Film]]
+
+
 class Person(BaseModel):
     uuid: UUID
     full_name: str
