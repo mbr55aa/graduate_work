@@ -4,14 +4,14 @@ from uuid import UUID
 from pydantic import BaseModel
 
 
-class FilmPeople(BaseModel):
+class BasePerson(BaseModel):
     """Информация о персоне."""
     uuid: UUID
     full_name: str
 
 
-class FilmGenre(BaseModel):
-    """Информация о жанре"""
+class BaseGenre(BaseModel):
+    """Информация о жанре."""
     uuid: UUID
     name: str
 
@@ -22,9 +22,18 @@ class Film(BaseModel):
     title: str
     imdb_rating: float
     description: str
-    genre: Optional[List[FilmGenre]]
-    actors: Optional[List[FilmPeople]]
+    genre: Optional[List[BaseGenre]]
+    actors: Optional[List[BasePerson]]
     actors_names: Optional[List[str]]
-    writers: Optional[List[FilmPeople]]
+    writers: Optional[List[BasePerson]]
     writers_names: Optional[List[str]]
     directors_names: Optional[List[str]]
+
+
+class Person(BaseModel):
+    """Подробная информация о персоне."""
+    uuid: UUID
+    full_name: str
+    birth_date: Optional[str]
+    film_ids: List[str]
+    film_detailed_ids: Optional[List[Film]]

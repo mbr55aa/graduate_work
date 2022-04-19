@@ -7,13 +7,17 @@ from typing import List, Optional
 from uuid import UUID
 
 from core import config
-from models.film import Film
+from models.models import Film, Person
 
 
 class SearchConnector:
 
     SEARCH_API_URL = None
 
+    def __init__(self):
+        pass
+
+    # Film methods
     def find_film_data(self, search_str: str) -> Optional[Film]:
         """
         Find all info about the requested film.
@@ -21,7 +25,7 @@ class SearchConnector:
         :param search_str: film name
         :return: Film or None
         """
-        film_uuid = self.find_film_uuid(search_str)
+        film_uuid = self._find_film_uuid(search_str)
         film = self._get_film_by_uuid(film_uuid)
         return film
 
@@ -98,7 +102,22 @@ class SearchConnector:
         film = self.find_film_data(search_str)
         return getattr(film, 'writers_names', None)
 
-    def find_film_uuid(self, search_str: str) -> Optional[UUID]:
+    # person methods
+    def find_person_data(self, search_str):
+        person_id = self._find_person_uuid(search_str)
+        person = self._get_person_by_uuid(person_id)
+        return person
+
+    def find_person_name(self, search_str: str) -> str:
+        person = self.find_person_data(search_str)
+        return getattr(person, 'full_name', None)
+
+    def find_person_films(self, search_str: str) -> List[str]:
+        person = self.find_person_data(search_str)
+        return [f.title for f in getattr(person, 'film_detailed_ids', [])]
+
+    # Support methods
+    def _find_film_uuid(self, search_str: str) -> Optional[UUID]:
         """
         Find UUID of the requested film.
 
@@ -128,6 +147,31 @@ class SearchConnector:
         if not response:
             return None
         return Film(**response)
+
+    def _find_person_uuid(self, search_str):
+        response = self._get_response(
+            "person/",
+            query={
+                "search[name]": search_str,
+                "page[size]": 1,
+                "page[number]": 1,
+            },
+        )
+        if not response:
+            return None
+        return response[0].get('uuid')
+
+    def _get_person_by_uuid(self, person_uuid):
+        response = self._get_response(f"person/{person_uuid}")
+        if not response:
+            return None
+        person = Person(**response)
+        person.film_detailed_ids = []
+        for film_uuid in response['film_ids'] or []:
+            film = self._get_film_by_uuid(film_uuid)
+            if film:
+                person.film_detailed_ids.append(film)
+        return person
 
     def _get_response(self, path: str, query: Optional[dict] = None) -> Optional[dict]:
         """
