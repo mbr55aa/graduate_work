@@ -1,0 +1,2 @@
+class LackOfParamsError(Exception):
+    pass

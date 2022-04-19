@@ -7,15 +7,13 @@ from typing import List, Optional
 from uuid import UUID
 
 from core import config
+from core.utils import LackOfParamsError
 from models.models import Film, Genre, Person
 
 
 class SearchConnector:
 
     SEARCH_API_URL = None
-
-    def __init__(self):
-        pass
 
     # Film methods
     def find_film_data(self, search_str: str) -> Optional[Film]:
@@ -105,6 +103,8 @@ class SearchConnector:
         @param search_str: film name
         @return: UUID of the film that best matches the request or None
         """
+        if not search_str:
+            raise LackOfParamsError
         response = self._get_response(
             "film/search",
             query={
@@ -129,6 +129,8 @@ class SearchConnector:
         return Film(**response)
 
     def _find_genre_uuid(self, search_str):
+        if not search_str:
+            raise LackOfParamsError
         response = self._get_response(
             "genre/",
             query={
@@ -154,6 +156,8 @@ class SearchConnector:
         return genre
 
     def _find_person_uuid(self, search_str):
+        if not search_str:
+            raise LackOfParamsError
         response = self._get_response(
             "person/",
             query={
