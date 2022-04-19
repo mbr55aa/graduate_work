@@ -76,9 +76,17 @@ class SearchConnector:
 
     # person methods
     def find_person_data(self, search_str):
-        perosn_id = self._find_person_uuid(search_str)
-        person = self._get_person_by_uuid(perosn_id)
+        person_id = self._find_person_uuid(search_str)
+        person = self._get_person_by_uuid(person_id)
         return person
+
+    def find_person_name(self, search_str: str) -> str:
+        person = self.find_person_data(search_str)
+        return getattr(person, 'full_name', None)
+
+    def find_person_films(self, search_str: str) -> List[str]:
+        person = self.find_person_data(search_str)
+        return [f.title for f in getattr(person, 'film_detailed_ids', [])]
 
     # Support methods
     def _find_film_uuid(self, search_str: str) -> Optional[UUID]:
