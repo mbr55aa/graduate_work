@@ -50,6 +50,10 @@ $ make down
   - в папку `bob/models` поместить [модель](https://drive.google.com/file/d/1INh4uMXfcJfNXhisvVBWrJ_kDNxFoziT/view?usp=sharing)
   - название папки с моделью добавить в .env файл проекта в переменную `VOSK_MODEL`
 
+## Настройка Алисы
+
+Инструкция по настройке Алисы и описание возможностей ассистента в отдельном [readme](alice/README.md)
+
 # Взаимодействие
 ## Облачный инстанс
 - Документация Assistant: http://51.250.26.192:8001/apidocs/
