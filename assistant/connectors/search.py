@@ -7,7 +7,7 @@ from typing import List, Optional
 from uuid import UUID
 
 from core import config
-from models.film import Film, Person
+from models.models import Film, Person
 
 
 class SearchConnector:
@@ -123,11 +123,17 @@ class SearchConnector:
             return None
         return response[0].get('uuid')
 
-    def _get_person_by_uuid(self, film_uuid):
-        response = self._get_response(f"person/{film_uuid}")
+    def _get_person_by_uuid(self, person_uuid):
+        response = self._get_response(f"person/{person_uuid}")
         if not response:
             return None
-        return Person(**response)
+        person = Person(**response)
+        person.film_detailed_ids = []
+        for film_uuid in response['film_ids'] or []:
+            film = self._get_film_by_uuid(film_uuid)
+            if film:
+                person.film_detailed_ids.append(film)
+        return person
 
     def _get_response(self, path: str, query: Optional[dict] = None) -> Optional[dict]:
         """

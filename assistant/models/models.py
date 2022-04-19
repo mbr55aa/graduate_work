@@ -36,3 +36,4 @@ class Person(BaseModel):
     full_name: str
     birth_date: Optional[str]
     film_ids: List[str]
+    film_detailed_ids: Optional[List[Film]]
