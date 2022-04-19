@@ -1,6 +1,7 @@
 """Функции для запроса и вывода данных."""
 import logging
 import random
+from http import HTTPStatus
 from typing import Optional, Tuple
 
 import requests
@@ -38,7 +39,7 @@ def get_response(resp_str: str) -> Optional[Response]:
         logger.error(colored('Can\'t connect to assistant api', 'red'))
         return None
     else:
-        if response.json() == {'error': 'Not found'}:
+        if response.status_code != HTTPStatus.OK:
             return None
         return response
 
