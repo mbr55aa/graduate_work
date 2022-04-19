@@ -75,7 +75,7 @@ class SearchConnector:
     # Genre methods
     def find_genre_data(self, search_str):
         genre_id = self._find_genre_uuid(search_str)
-        genre = self._get_genre_by_uuid(genre_id)
+        genre = self._get_genre_by_uuid(genre_id, detailed=True)
         return genre
 
     def find_genre_films(self, search_str: str) -> List[str]:
@@ -85,7 +85,7 @@ class SearchConnector:
     # Person methods
     def find_person_data(self, search_str):
         person_id = self._find_person_uuid(search_str)
-        person = self._get_person_by_uuid(person_id)
+        person = self._get_person_by_uuid(person_id, detailed=True)
         return person
 
     def find_person_name(self, search_str: str) -> str:
@@ -143,11 +143,13 @@ class SearchConnector:
             return None
         return response[0].get('uuid')
 
-    def _get_genre_by_uuid(self, genre_uuid):
+    def _get_genre_by_uuid(self, genre_uuid, detailed=False):
         response = self._get_response(f"genre/{genre_uuid}")
         if not response:
             return None
         genre = Genre(**response)
+        if not detailed:
+            return genre
         genre.film_detailed_ids = []
         for film_uuid in response['film_ids'] or []:
             film = self._get_film_by_uuid(film_uuid)
@@ -170,11 +172,13 @@ class SearchConnector:
             return None
         return response[0].get('uuid')
 
-    def _get_person_by_uuid(self, person_uuid):
+    def _get_person_by_uuid(self, person_uuid, detailed=False):
         response = self._get_response(f"person/{person_uuid}")
         if not response:
             return None
         person = Person(**response)
+        if not detailed:
+            return person
         person.film_detailed_ids = []
         for film_uuid in response['film_ids'] or []:
             film = self._get_film_by_uuid(film_uuid)
