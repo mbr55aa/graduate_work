@@ -40,7 +40,9 @@ class GenreService(AbstractService):
         return Genre(**genre_info)
 
     async def get_list(
-            self, film_uuid: Optional[UUID],
+            self,
+            film_uuid: Optional[UUID],
+            filter_name: Optional[str],
             sort: str,
             page_size: int,
             page_number: int
@@ -49,17 +51,18 @@ class GenreService(AbstractService):
             Получить список жанров, относящихся к определенному
             фильму (если фильм задан, иначе всех жанров).
         """
-        genres = await self._get_list_from_cache(film_uuid, sort, page_size, page_number)
+        genres = await self._get_list_from_cache(film_uuid, filter_name, sort, page_size, page_number)
         if not genres:
-            genres = await self._get_list_from_storage(film_uuid, sort, page_size, page_number)
+            genres = await self._get_list_from_storage(film_uuid, filter_name, sort, page_size, page_number)
             if not genres:
                 return []
-            await self._put_list_to_cache(genres, film_uuid, sort, page_size, page_number)
+            await self._put_list_to_cache(genres, film_uuid, filter_name, sort, page_size, page_number)
         return genres
 
     async def _get_list_from_storage(
             self,
             film_uuid: Optional[UUID],
+            filter_name: Optional[str],
             sort: str,
             page_size: int,
             page_number: int
@@ -86,6 +89,8 @@ class GenreService(AbstractService):
                 {sort or "name": {"order": "asc"}}
             ]
         }
+        if filter_name:
+            search_query["query"] = {"match": {"name": filter_name}}
         es_fields = ["id", "name", "description"]
         doc = await self.storage.search('genres', search_query, es_fields)
         genres_info = doc.get("hits").get("hits")
@@ -94,11 +99,12 @@ class GenreService(AbstractService):
     async def _get_list_from_cache(
             self,
             film_uuid: Optional[UUID],
+            filter_name: Optional[str],
             sort: str,
             page_size: int,
             page_number: int
     ) -> List[GenreBrief]:
-        key = self._get_key(film_uuid, sort, page_size, page_number)
+        key = self._get_key(film_uuid, filter_name, sort, page_size, page_number)
         data = await self.cache.get(key)
         if not data:
             return []
@@ -109,11 +115,12 @@ class GenreService(AbstractService):
             self,
             genres: List[GenreBrief],
             film_uuid: Optional[UUID],
+            filter_name: Optional[str],
             sort: str,
             page_size: int,
             page_number: int
     ):
-        key = self._get_key(film_uuid, sort, page_size, page_number)
+        key = self._get_key(film_uuid, filter_name, sort, page_size, page_number)
         json = "[{}]".format(','.join(genre.json() for genre in genres))
         await self.cache.set(key, json, self.CACHE_EXPIRE_IN_SECONDS)
 

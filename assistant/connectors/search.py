@@ -7,7 +7,7 @@ from typing import List, Optional
 from uuid import UUID
 
 from core import config
-from models.models import Film, Person
+from models.models import Film, Genre, Person
 
 
 class SearchConnector:
@@ -91,7 +91,17 @@ class SearchConnector:
         film = self.find_film_data(search_str)
         return getattr(film, 'writers_names', None)
 
-    # person methods
+    # Genre methods
+    def find_genre_data(self, search_str):
+        genre_id = self._find_genre_uuid(search_str)
+        genre = self._get_genre_by_uuid(genre_id)
+        return genre
+
+    def find_genre_films(self, search_str: str) -> List[str]:
+        genre = self.find_genre_data(search_str)
+        return [f.title for f in getattr(genre, 'film_detailed_ids', [])]
+
+    # Person methods
     def find_person_data(self, search_str: str) -> Person:
         """Find information about requested person.
 
@@ -149,6 +159,31 @@ class SearchConnector:
         if not response:
             return None
         return Film(**response)
+
+    def _find_genre_uuid(self, search_str):
+        response = self._get_response(
+            "genre/",
+            query={
+                "search[name]": search_str,
+                "page[size]": 1,
+                "page[number]": 1,
+            },
+        )
+        if not response:
+            return None
+        return response[0].get('uuid')
+
+    def _get_genre_by_uuid(self, genre_uuid):
+        response = self._get_response(f"genre/{genre_uuid}")
+        if not response:
+            return None
+        genre = Genre(**response)
+        genre.film_detailed_ids = []
+        for film_uuid in response['film_ids'] or []:
+            film = self._get_film_by_uuid(film_uuid)
+            if film:
+                genre.film_detailed_ids.append(film)
+        return genre
 
     def _find_person_uuid(self, search_str: str) -> Optional[UUID]:
         """Find UUID of the requested person.
