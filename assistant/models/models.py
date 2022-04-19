@@ -38,6 +38,15 @@ class Genre(BaseModel):
     film_detailed_ids: Optional[List[Film]]
 
 
+class Genre(BaseModel):
+    """Подробная информация о жанре."""
+    uuid: UUID
+    name: str
+    description: Optional[str]
+    film_ids: List[str]
+    film_detailed_ids: Optional[List[Film]]
+
+
 class Person(BaseModel):
     """Подробная информация о персоне."""
     uuid: UUID

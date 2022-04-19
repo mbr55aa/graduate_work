@@ -160,7 +160,12 @@ class SearchConnector:
             return None
         return Film(**response)
 
-    def _find_genre_uuid(self, search_str):
+    def _find_genre_uuid(self, search_str: str) -> Optional[UUID]:
+        """Find UUID of the requested genre.
+
+        :param search_str: genre name
+        :return: UUID of the genre that best matches the request or None
+        """
         response = self._get_response(
             "genre/",
             query={
@@ -173,7 +178,12 @@ class SearchConnector:
             return None
         return response[0].get('uuid')
 
-    def _get_genre_by_uuid(self, genre_uuid):
+    def _get_genre_by_uuid(self, genre_uuid: UUID) -> Optional[Genre]:
+        """Get genre data by UUID.
+
+        :param genre_uuid: Genre UUID
+        :return: Genre or None
+        """
         response = self._get_response(f"genre/{genre_uuid}")
         if not response:
             return None
