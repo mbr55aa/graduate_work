@@ -17,8 +17,9 @@ sc = SearchConnector()
 @blueprint_bob.route("/", methods=["GET"])
 def api_request():
     """
-    Handle GET request, validate it, try to find required method of SearchConnector, execute it and return response
-    @return: JSON with requested data
+    Handle GET request, validate it, try to find required method of SearchConnector, execute it and return response.
+
+    :return: JSON with requested data
     """
     method = request.args.get('method')
     query = request.args.get('query')

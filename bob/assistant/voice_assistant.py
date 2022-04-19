@@ -2,9 +2,7 @@
 
 
 class VoiceAssistant:
-    """
-    Настройки голосового ассистента, включающие имя, пол, язык речи, идентификатор.
-    """
+    """Настройки голосового ассистента, включающие имя, пол, язык речи, идентификатор."""
     name = None
     sex = None
     speech_language = None
@@ -12,15 +10,15 @@ class VoiceAssistant:
     voice_id = None
 
     def __init__(self, voice: dict):
-        """
-        Функция инициализации экземпляра класса.
+        """Функция инициализации экземпляра класса.
+
         :param voice: Голос, полученный из инструмента синтеза речи
         """
         self.voice = voice
         self.setup_assistant_voice()
 
     def setup_assistant_voice(self):
-        """Установка голоса."""
+        """Функция установки голоса."""
         self.recognition_language = self.voice.languages
         self.sex = self.voice.gender
         self.name = self.voice.name
