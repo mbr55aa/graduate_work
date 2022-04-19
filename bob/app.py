@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 def run_step():
-    """Функция одного круга общения с голосовым помощником"""
+    """Функция одного круга общения с голосовым помощником."""
     voice_input = recognaizer.record_and_recognize_audio()
     if os.path.exists('microphone-results.wav'):
         os.remove('microphone-results.wav')

@@ -5,17 +5,19 @@ from pydantic import BaseModel
 
 
 class BasePerson(BaseModel):
+    """Информация о персоне."""
     uuid: UUID
     full_name: str
 
 
 class BaseGenre(BaseModel):
+    """Информация о жанре."""
     uuid: UUID
     name: str
 
 
 class Film(BaseModel):
-    """Подробная информация о фильме"""
+    """Подробная информация о фильме."""
     uuid: UUID
     title: str
     imdb_rating: float
@@ -27,9 +29,6 @@ class Film(BaseModel):
     writers_names: Optional[List[str]]
     directors_names: Optional[List[str]]
 
-    def __getitem__(self, item):
-        return item
-
 
 class Genre(BaseModel):
     uuid: UUID
@@ -40,6 +39,7 @@ class Genre(BaseModel):
 
 
 class Person(BaseModel):
+    """Подробная информация о персоне."""
     uuid: UUID
     full_name: str
     birth_date: Optional[str]

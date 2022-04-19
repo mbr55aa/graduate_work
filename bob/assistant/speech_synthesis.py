@@ -23,8 +23,8 @@ class SpeechSynthesis:
         self.assistant = VoiceAssistant(voice)
 
     def play_voice_assistant_speech(self, text_to_speech: str):
-        """
-        Проигрывание речи ответов голосового ассистента (без сохранения аудио)
+        """Проигрывание речи ответов голосового ассистента (без сохранения аудио).
+
         :param text_to_speech: текст, который нужно преобразовать в речь
         """
         logger.info(colored(text_to_speech, 'green'))
