@@ -104,7 +104,7 @@ services:
 #      - "8001:8001"
     networks:
       - movies_network
-    command: ["python", "app.py"]
+    command: ["gunicorn", "--bind", "0.0.0.0:8001", "wsgi:app"]
 
   nginx:
     image: nginx:1.19.2
