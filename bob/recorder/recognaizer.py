@@ -27,9 +27,9 @@ class Recognaizer:
 
     @staticmethod
     def get_model() -> Model:
-        """
-        Считывание модели на нужном языке из каталога приложения.
-        return: Model
+        """Считывание модели на нужном языке из каталога приложения.
+
+        :return: Model
         """
         if not os.path.exists(f'models/{VOSK_MODEL}'):
             print(colored("Please download the model from:\n"
@@ -41,8 +41,8 @@ class Recognaizer:
 
     @staticmethod
     def use_offline_recognition() -> str:
-        """
-        Переключение на оффлайн-распознавание речи
+        """Переключение на оффлайн-распознавание речи.
+
         :return: распознанная фраза
         """
         recognized_data: str = ''
@@ -71,8 +71,8 @@ class Recognaizer:
         return recognized_data
 
     def record_and_recognize_audio(self, *args: tuple) -> Optional[str]:
-        """
-        Запись и распознавание аудио.
+        """Запись и распознавание аудио.
+
         :param args: Дополнительные аргументы.
         :return: recognized_data: Распознанная речь.
         """

@@ -12,9 +12,9 @@ class Classifier:
     """Класс классификатор зпросов для угадывания намерений пользователя."""
 
     def __init__(self, commands: dict):
-        """
-        Функция инициализации экземпляра класса.
-        :param config: Словарь с возможными командами.
+        """Функция инициализации экземпляра класса.
+
+        :param commands: Словарь с возможными командами.
         """
         self.commands = commands
         self.vectorizer = TfidfVectorizer(analyzer='char', ngram_range=(2, 3))
@@ -23,9 +23,7 @@ class Classifier:
         self.prepare_corpus()
 
     def prepare_corpus(self):
-        """
-        Подготовка модели для угадывания намерения пользователя.
-        """
+        """Функция подготовки модели для угадывания намерения пользователя."""
         corpus = []
         target_vector = []
         for intent_name, intent_data in self.commands['intents'].items():
@@ -38,10 +36,10 @@ class Classifier:
         self.classifier.fit(training_vector, target_vector)
 
     def get_intent(self, request: str) -> str:
-        """
-        Получение наиболее вероятного намерения в зависимости от запроса пользователя
-        :param request: запрос пользователя (первая часть запроса)
-        :return: наиболее вероятное намерение
+        """Получение наиболее вероятного намерения в зависимости от запроса пользователя.
+
+        :param request: Запрос пользователя (первая часть запроса).
+        :return: Наиболее вероятное намерение.
         """
         best_intent = self.classifier.predict(self.vectorizer.transform([request]))[0]
 

@@ -17,8 +17,8 @@ logger = logging.getLogger(__name__)
 
 
 def get_random_phrase(some_list: list) -> str:
-    """
-    Функция рандомного выбора фразы.
+    """Функция рандомного выбора фразы.
+    
     :param some_list: Список возможных фраз.
     :return: Случайная фраза из списка.
     """
@@ -27,10 +27,10 @@ def get_random_phrase(some_list: list) -> str:
 
 
 def get_response(resp_str: str) -> Optional[Response]:
-    """
-    Функция запроса к assistant API.
-    :param: resp_str: Строка запроса
-    :return: response либо None
+    """Функция запроса к assistant API.
+    
+    :param resp_str: Строка запроса.
+    :return: response либо None.
     """
     try:
         response = requests.get(resp_str)
@@ -44,9 +44,9 @@ def get_response(resp_str: str) -> Optional[Response]:
 
 
 def get_filmwork_name_from_api(filmwork_name: str) -> Optional[str]:
-    """
-    Функция запроса корректного имени кинопроизведения из assistant API.
-    :param: filmwork_name: Предпологаемое имя кинопроизведения.
+    """Функция запроса корректного имени кинопроизведения из assistant API.
+    
+    :param filmwork_name: Предпологаемое имя кинопроизведения.
     :return: Корректное имя или None.
     """
     filmwork_name_resp = get_response(
@@ -58,9 +58,9 @@ def get_filmwork_name_from_api(filmwork_name: str) -> Optional[str]:
 
 
 def get_film_name(*args) -> Tuple[str, str]:
-    """
-    Функция получения имени кинопроизведения и его типа из параметров запроса
-    :param: args: запрос от пользователя.
+    """Функция получения имени кинопроизведения и его типа из параметров запроса.
+
+    :param args: запрос от пользователя.
     :return: Tuple(filmwork_name, filmwork_type): Имя и тип кинопроизведения.
     """
     # Если пользователь не произносит тип кинопроизведения, то по умолчанию считаем фильмом
@@ -92,8 +92,8 @@ def get_film_name(*args) -> Tuple[str, str]:
 
 
 def play_greetings(synthesizer: SpeechSynthesis, *args: tuple) -> None:
-    """
-    Функция проигрывания приветствия помощника.
+    """Функция проигрывания приветствия помощника.
+
     :param synthesizer: Экземпляр класса SpeechSynthesis.
     :param args: Возможные доп. параметры.
     :return: None
@@ -102,8 +102,8 @@ def play_greetings(synthesizer: SpeechSynthesis, *args: tuple) -> None:
 
 
 def play_failure_phrase(synthesizer: SpeechSynthesis, *args: tuple) -> None:
-    """
-    Функция проигрывания ошибки распознавания команды.
+    """Функция проигрывания ошибки распознавания команды.
+
     :param synthesizer: Экземпляр класса SpeechSynthesis.
     :param args: Возможные доп. параметры.
     :return: None
@@ -112,8 +112,8 @@ def play_failure_phrase(synthesizer: SpeechSynthesis, *args: tuple) -> None:
 
 
 def play_farewell_and_quit(synthesizer: SpeechSynthesis, *args: tuple) -> None:
-    """
-    Функция проигрывания завершающей фразы и выхода программы.
+    """Функция проигрывания завершающей фразы и выхода программы.
+
     :param synthesizer: Экземпляр класса SpeechSynthesis.
     :param args: Возможные доп. параметры.
     :return: None
@@ -123,8 +123,8 @@ def play_farewell_and_quit(synthesizer: SpeechSynthesis, *args: tuple) -> None:
 
 
 def search_director(synthesizer: SpeechSynthesis, *args: tuple) -> None:
-    """
-    Функция поиска режиссера кинопроизведения.
+    """Функция поиска режиссера кинопроизведения.
+
     :param synthesizer: Экземпляр класса SpeechSynthesis.
     :param args: Возможные доп. параметры.
     :return: None
@@ -137,8 +137,8 @@ def search_director(synthesizer: SpeechSynthesis, *args: tuple) -> None:
 
 
 def search_writer(synthesizer: SpeechSynthesis, *args: tuple) -> None:
-    """
-    Функция поиска сценариста кинопроизведения.
+    """Функция поиска сценариста кинопроизведения.
+
     :param synthesizer: Экземпляр класса SpeechSynthesis.
     :param args: Возможные доп. параметры.
     :return: None
@@ -151,8 +151,8 @@ def search_writer(synthesizer: SpeechSynthesis, *args: tuple) -> None:
 
 
 def search_actor(synthesizer: SpeechSynthesis, *args: tuple) -> None:
-    """
-    Функция поиска актеров кинопроизведения.
+    """Функция поиска актеров кинопроизведения.
+
     :param synthesizer: Экземпляр класса SpeechSynthesis.
     :param args: Возможные доп. параметры.
     :return: None
@@ -165,8 +165,8 @@ def search_actor(synthesizer: SpeechSynthesis, *args: tuple) -> None:
 
 
 def search_description(synthesizer: SpeechSynthesis, *args: tuple) -> None:
-    """
-    Функция поиска описания кинопроизведения.
+    """Функция поиска описания кинопроизведения.
+
     :param synthesizer: Экземпляр класса SpeechSynthesis.
     :param args: Возможные доп. параметры.
     :return: None
@@ -179,8 +179,8 @@ def search_description(synthesizer: SpeechSynthesis, *args: tuple) -> None:
 
 
 def search_rating(synthesizer: SpeechSynthesis, *args: tuple) -> None:
-    """
-    Функция поиска рейтинга кинопроизведения.
+    """Функция поиска рейтинга кинопроизведения.
+
     :param synthesizer: Экземпляр класса SpeechSynthesis.
     :param args: Возможные доп. параметры.
     :return: None
@@ -193,8 +193,8 @@ def search_rating(synthesizer: SpeechSynthesis, *args: tuple) -> None:
 
 
 def search_genres(synthesizer: SpeechSynthesis, *args: tuple) -> None:
-    """
-    Функция поиска жанров кинопроизведения.
+    """Функция поиска жанров кинопроизведения.
+
     :param synthesizer: Экземпляр класса SpeechSynthesis.
     :param args: Возможные доп. параметры.
     :return: None
@@ -208,8 +208,8 @@ def search_genres(synthesizer: SpeechSynthesis, *args: tuple) -> None:
 
 def play_response(synthesizer: SpeechSynthesis, role: str,
                   response: Optional[Response], filmwork_name: str, filmwork_type: str) -> None:
-    """
-    Функция проигрывания найденных результатов по кинопроизведению.
+    """Функция проигрывания найденных результатов по кинопроизведению.
+
     :param synthesizer: Экземпляр класса SpeechSynthesis.
     :param role: Тип ответа.
     :param response: Ответ от assistant api.
@@ -225,8 +225,8 @@ def play_response(synthesizer: SpeechSynthesis, role: str,
 
 
 def play_help(synthesizer: SpeechSynthesis, *args: tuple) -> None:
-    """
-    Функция проигрывания фразы help.
+    """Функция проигрывания фразы help.
+
     :param synthesizer: Экземпляр класса SpeechSynthesis.
     :param args: Возможные доп. параметры.
     :return: None
@@ -241,8 +241,8 @@ def play_help(synthesizer: SpeechSynthesis, *args: tuple) -> None:
 
 
 def play_intro(synthesizer: SpeechSynthesis, *args: tuple) -> None:
-    """
-    Функция проигрывания вступления.
+    """Функция проигрывания вступления.
+
     :param synthesizer: Экземпляр класса SpeechSynthesis.
     :param args: Возможные доп. параметры.
     :return: None
