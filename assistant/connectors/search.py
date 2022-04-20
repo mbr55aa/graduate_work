@@ -8,7 +8,7 @@ from uuid import UUID
 
 from core import config
 from core.utils import LackOfParamsError
-from models.models import Film, Genre, Person
+from models.models import Film, FilmBase, Films, Genre, Person
 
 
 class SearchConnector:
@@ -92,6 +92,19 @@ class SearchConnector:
         film = self.find_film_data(search_str)
         return getattr(film, 'writers_names', None)
 
+    # Films methods
+    def find_top_films(self, search_str=None):
+        films = Films()
+        if search_str:
+            genre_uuid = self._find_genre_uuid(search_str)
+            genre = self._get_genre_by_uuid(genre_uuid)
+            films.genre = genre.name
+        else:
+            genre_uuid = None
+        film_ids = self._get_films(genre_uuid)
+        films.film_ids = film_ids
+        return films
+
     # Genre methods
     def find_genre_data(self, search_str):
         genre_id = self._find_genre_uuid(search_str)
@@ -162,6 +175,19 @@ class SearchConnector:
         if not response:
             return None
         return Film(**response)
+
+    def _get_films(self, genre_uuid: Optional[UUID]):
+        response = self._get_response(
+            "film/",
+            query={
+                "filter[genre]": genre_uuid,
+                "page[size]": 10,
+                "page[number]": 1,
+            },
+        )
+        if not response:
+            return None
+        return [FilmBase(**row) for row in response]
 
     def _find_genre_uuid(self, search_str):
         if not search_str:
