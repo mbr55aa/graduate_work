@@ -50,6 +50,8 @@ $ make down
   - в папку `bob/models` поместить [модель](https://drive.google.com/file/d/1INh4uMXfcJfNXhisvVBWrJ_kDNxFoziT/view?usp=sharing)
   - название папки с моделью добавить в .env файл проекта в переменную `VOSK_MODEL`
 
+- Описание возможностей ассистента находится в отдельном [readme](bob/README.md)
+
 ## Настройка Алисы
 
 - Инструкция по настройке Алисы и описание возможностей ассистента в отдельном [readme](alice/README.md)
