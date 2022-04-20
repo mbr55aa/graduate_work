@@ -7,7 +7,8 @@ from typing import List, Optional
 from uuid import UUID
 
 from core import config
-from models.models import Film, Genre, Person
+from core.utils import LackOfParamsError
+from models.models import Film, FilmBase, Films, Genre, Person
 
 
 class SearchConnector:
@@ -91,10 +92,23 @@ class SearchConnector:
         film = self.find_film_data(search_str)
         return getattr(film, 'writers_names', None)
 
+    # Films methods
+    def find_top_films(self, search_str: Optional[str]) -> Optional[Films]:
+        films = Films()
+        if search_str:
+            genre_uuid = self._find_genre_uuid(search_str)
+            genre = self._get_genre_by_uuid(genre_uuid)
+            films.genre = genre.name
+        else:
+            genre_uuid = None
+        film_ids = self._get_films(genre_uuid)
+        films.film_ids = film_ids
+        return films
+
     # Genre methods
-    def find_genre_data(self, search_str):
+    def find_genre_data(self, search_str: str) -> Optional[Genre]:
         genre_id = self._find_genre_uuid(search_str)
-        genre = self._get_genre_by_uuid(genre_id)
+        genre = self._get_genre_by_uuid(genre_id, detailed=True)
         return genre
 
     def find_genre_films(self, search_str: str) -> List[str]:
@@ -102,14 +116,14 @@ class SearchConnector:
         return [f.title for f in getattr(genre, 'film_detailed_ids', [])]
 
     # Person methods
-    def find_person_data(self, search_str: str) -> Person:
+    def find_person_data(self, search_str: str) -> Optional[Person]:
         """Find information about requested person.
 
         :param search_str: person name
         :return: Person
         """
         person_id = self._find_person_uuid(search_str)
-        person = self._get_person_by_uuid(person_id)
+        person = self._get_person_by_uuid(person_id, detailed=True)
         return person
 
     def find_person_name(self, search_str: str) -> str:
@@ -137,6 +151,8 @@ class SearchConnector:
         :param search_str: film name
         :return: UUID of the film that best matches the request or None
         """
+        if not search_str:
+            raise LackOfParamsError
         response = self._get_response(
             "film/search",
             query={
@@ -160,7 +176,22 @@ class SearchConnector:
             return None
         return Film(**response)
 
-    def _find_genre_uuid(self, search_str):
+    def _get_films(self, genre_uuid: Optional[UUID]):
+        response = self._get_response(
+            "film/",
+            query={
+                "filter[genre]": genre_uuid,
+                "page[size]": 10,
+                "page[number]": 1,
+            },
+        )
+        if not response:
+            return None
+        return [FilmBase(**row) for row in response]
+
+    def _find_genre_uuid(self, search_str: str) -> Optional[UUID]:
+        if not search_str:
+            raise LackOfParamsError
         response = self._get_response(
             "genre/",
             query={
@@ -173,11 +204,13 @@ class SearchConnector:
             return None
         return response[0].get('uuid')
 
-    def _get_genre_by_uuid(self, genre_uuid):
+    def _get_genre_by_uuid(self, genre_uuid: UUID, detailed: bool = False) -> Optional[Genre]:
         response = self._get_response(f"genre/{genre_uuid}")
         if not response:
             return None
         genre = Genre(**response)
+        if not detailed:
+            return genre
         genre.film_detailed_ids = []
         for film_uuid in response['film_ids'] or []:
             film = self._get_film_by_uuid(film_uuid)
@@ -191,6 +224,8 @@ class SearchConnector:
         :param search_str: person name
         :return: UUID of the person that best matches the request or None
         """
+        if not search_str:
+            raise LackOfParamsError
         response = self._get_response(
             "person/",
             query={
@@ -203,7 +238,7 @@ class SearchConnector:
             return None
         return response[0].get('uuid')
 
-    def _get_person_by_uuid(self, person_uuid: UUID) -> Optional[Person]:
+    def _get_person_by_uuid(self, person_uuid: UUID, detailed: bool = False) -> Optional[Person]:
         """Get person data by UUID.
 
         :param person_uuid: Person UUID
@@ -213,6 +248,8 @@ class SearchConnector:
         if not response:
             return None
         person = Person(**response)
+        if not detailed:
+            return person
         person.film_detailed_ids = []
         for film_uuid in response['film_ids'] or []:
             film = self._get_film_by_uuid(film_uuid)
