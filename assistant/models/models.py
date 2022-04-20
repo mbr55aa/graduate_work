@@ -38,6 +38,7 @@ class Film(BaseModel):
 
 
 class Films(BaseModel):
+    """Список фильмов."""
     genre: Optional[str]
     film_ids: Optional[FilmBase]
 

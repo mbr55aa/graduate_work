@@ -93,7 +93,7 @@ class SearchConnector:
         return getattr(film, 'writers_names', None)
 
     # Films methods
-    def find_top_films(self, search_str=None):
+    def find_top_films(self, search_str: Optional[str]) -> Optional[Films]:
         films = Films()
         if search_str:
             genre_uuid = self._find_genre_uuid(search_str)
@@ -106,7 +106,7 @@ class SearchConnector:
         return films
 
     # Genre methods
-    def find_genre_data(self, search_str):
+    def find_genre_data(self, search_str: str) -> Optional[Genre]:
         genre_id = self._find_genre_uuid(search_str)
         genre = self._get_genre_by_uuid(genre_id, detailed=True)
         return genre
@@ -116,7 +116,7 @@ class SearchConnector:
         return [f.title for f in getattr(genre, 'film_detailed_ids', [])]
 
     # Person methods
-    def find_person_data(self, search_str: str) -> Person:
+    def find_person_data(self, search_str: str) -> Optional[Person]:
         """Find information about requested person.
 
         :param search_str: person name
@@ -189,7 +189,7 @@ class SearchConnector:
             return None
         return [FilmBase(**row) for row in response]
 
-    def _find_genre_uuid(self, search_str):
+    def _find_genre_uuid(self, search_str: str) -> Optional[UUID]:
         if not search_str:
             raise LackOfParamsError
         response = self._get_response(
@@ -204,7 +204,7 @@ class SearchConnector:
             return None
         return response[0].get('uuid')
 
-    def _get_genre_by_uuid(self, genre_uuid, detailed=False):
+    def _get_genre_by_uuid(self, genre_uuid: UUID, detailed: bool = False) -> Optional[Genre]:
         response = self._get_response(f"genre/{genre_uuid}")
         if not response:
             return None
@@ -238,7 +238,7 @@ class SearchConnector:
             return None
         return response[0].get('uuid')
 
-    def _get_person_by_uuid(self, person_uuid: UUID, detailed=False) -> Optional[Person]:
+    def _get_person_by_uuid(self, person_uuid: UUID, detailed: bool = False) -> Optional[Person]:
         """Get person data by UUID.
 
         :param person_uuid: Person UUID
