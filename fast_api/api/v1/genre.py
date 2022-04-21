@@ -50,6 +50,7 @@ async def genre_details(
 async def genre_list(
         sort: Literal["name.raw"] = "name.raw",
         filter_film: Optional[UUID] = Query(None, alias="filter[film]"),
+        filter_name: Optional[str] = Query(None, alias="search[name]"),
         page_size: int = Query(10, alias="page[size]"),
         page_number: int = Query(1, alias="page[number]"),
         genre_service: GenreService = Depends(get_genre_service)
@@ -57,7 +58,7 @@ async def genre_list(
     """Function to get a list of all genres."""
     logging.debug(f"Получили параметры {sort=}-{type(sort)}, {filter_film=}-{type(filter_film)},"
                   f" {page_size=}-{type(page_size)}, {page_number=}-{type(page_number)}")
-    genres = await genre_service.get_list(filter_film, sort, page_size, page_number)
+    genres = await genre_service.get_list(filter_film, filter_name, sort, page_size, page_number)
     if not genres:
         # Если выборка пустая, отдаём 404 статус
         # Желательно пользоваться уже определёнными HTTP-статусами, которые содержат enum
