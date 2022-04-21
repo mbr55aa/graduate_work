@@ -138,3 +138,21 @@ DB_SCHEMA = "content"
 STATIC_ROOT = "/data/static/"
 
 LOCALE_PATH = ['movies/locale']
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_DB', 'movies'),
+        'USER': os.environ.get('POSTGRES_USER', 'postgres'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'postgres'),
+        'HOST': os.environ.get('POSTGRES_HOST', '127.0.0.1'),
+        'PORT': os.environ.get('POSTGRES_PORT', 5432),
+        'OPTIONS': {
+           'options': '-c search_path=public,content'
+        }
+    }
+}
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
