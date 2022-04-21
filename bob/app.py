@@ -5,7 +5,7 @@ from logging import config as logger_conf
 
 from classifier.classifier import Classifier
 from core.log_config import LOGGING
-from recorder.recognaizer import Recognaizer
+from recorder.recognizer import Recognizer
 from termcolor import colored
 
 from assistant.commands import config as commands
@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 def run_step():
     """Функция одного круга общения с голосовым помощником."""
-    voice_input = recognaizer.record_and_recognize_audio()
+    voice_input = recognizer.record_and_recognize_audio()
     if os.path.exists('microphone-results.wav'):
         os.remove('microphone-results.wav')
     logger.info(colored(voice_input, 'blue'))
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     logger.info('Работа программы началась')
 
     # Экземпляр класса записи и распознавания речи
-    recognaizer = Recognaizer()
+    recognizer = Recognizer()
     # Экземпляр класса синтеза речи
     synthesizer = SpeechSynthesis()
     # Экземпляр класса классификатора запросов
