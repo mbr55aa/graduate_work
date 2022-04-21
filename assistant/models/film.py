@@ -1,20 +1,31 @@
 from typing import List, Optional
 from uuid import UUID
 
+import orjson
 from pydantic import BaseModel
 
 
-class FilmPeople(BaseModel):
+def orjson_dumps(v, *, default):
+    return orjson.dumps(v, default=default).decode()
+
+
+class AbstractModel(BaseModel):
+    class Config:
+        json_loads = orjson.loads
+        json_dumps = orjson_dumps
+
+
+class FilmPeople(AbstractModel):
     uuid: UUID
     full_name: str
 
 
-class FilmGenre(BaseModel):
+class FilmGenre(AbstractModel):
     uuid: UUID
     name: str
 
 
-class Film(BaseModel):
+class Film(AbstractModel):
     """Подробная информация о фильме"""
     uuid: UUID
     title: str
