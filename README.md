@@ -50,6 +50,8 @@ $ make down
   - в папку `bob/models` поместить [модель](https://drive.google.com/file/d/1INh4uMXfcJfNXhisvVBWrJ_kDNxFoziT/view?usp=sharing)
   - название папки с моделью добавить в .env файл проекта в переменную `VOSK_MODEL`
 
+- Описание возможностей ассистента находится в отдельном [readme](bob/README.md)
+
 ## Настройка Алисы
 
 - Инструкция по настройке Алисы и описание возможностей ассистента в отдельном [readme](alice/README.md)
@@ -66,3 +68,8 @@ $ make down
 - Assistant API: http://localhost:8001/api/v1/bob/
 - Документация FastAPI: http://localhost:8000/api/openapi
 - Админка Django: http://localhost/admin/ (user admin, password 123456)
+
+# Известные проблемы
+- **Assistant API и FastAPI ничего не находят:**<br/>
+Если в момент первого запуска проекта не было папки postgres\pgdata\ или в процессе работы был перезалит дамп то 
+необходимо сбросить состояние ETL, для этого удалите файл postgres_to_es\state.json и перезапустите сервисы.
