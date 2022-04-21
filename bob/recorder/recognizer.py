@@ -14,7 +14,7 @@ from vosk import KaldiRecognizer, Model
 logger = logging.getLogger(__name__)
 
 
-class Recognaizer:
+class Recognizer:
     """Класс записи и распознавания речи."""
 
     microphone = None
@@ -49,7 +49,7 @@ class Recognaizer:
         model: Optional[Model] = None
 
         try:
-            model = Recognaizer.get_model()
+            model = Recognizer.get_model()
         except FileNotFoundError:
             exit(1)
 
@@ -107,6 +107,6 @@ class Recognaizer:
             # в случае проблем с доступом в Интернет происходит попытка использовать offline-распознавание через Vosk
             except speech_recognition.RequestError:
                 print(colored('Trying to use offline recognition...', 'cyan'))
-                recognized_data = Recognaizer.use_offline_recognition()
+                recognized_data = Recognizer.use_offline_recognition()
 
             return recognized_data
