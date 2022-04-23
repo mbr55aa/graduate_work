@@ -7,10 +7,10 @@
 !include <office/Servers/application_server>
 !include <office/Servers/database_server>
 
-title Голосовой помощник
+title Голосовой Помощник
 
 'Добавляем теги для цветов контейнеров
-AddElementTag("bg_red", $bgColor="#d54240")
+AddElementTag("bg_red", $bgColor="#fd6159")
 AddElementTag("bg_green", $bgColor="#79cfb8")
 AddElementTag("font_black", $fontColor="#000000")
 AddElementTag("border_black", $borderColor="#000000")
@@ -22,10 +22,10 @@ AddContainerTag("webApp", $sprite="application_server", $legendText="web app con
 AddContainerTag("db", $sprite="database_server", $legendText="database container")
 
 'Объявляем цвета
-!$COLOR_BLUE = "#3872fd"
+!$COLOR_BLUE = "#1689D2"
 !$COLOR_BLACK = "#000000"
-!$COLOR_REL_LINE = "#4169E1"
-!$COLOR_REL_TEXT = "#8073ac"
+!$COLOR_REL_LINE = "#444444"
+!$COLOR_REL_TEXT = "#444444"
 
 'Меняем стиль линий и элемента person
 UpdateElementStyle("person", $bgColor=$COLOR_BLUE, $fontColor=$COLOR_BLACK, $borderColor=$COLOR_BLACK, $shadowing="true")
@@ -37,7 +37,7 @@ LAYOUT_WITH_LEGEND()
 'Элемент пользователь
 Person(user, "User")
 
-'Система локального распознования и синтеза речи (Bob)
+'Система локального распознавания и синтеза речи (Bob)
 Container(bob, "Bob Application", "Python", $tags="font_black+bg_red+localApp")
 
 'Навыки Алисы
@@ -53,27 +53,26 @@ System_Boundary(movie_service, "Movie Service") {
     ContainerDb(redis, "DB Redis", "Redis", $tags="font_black+bg_green+border_black+db")
 }
 
-'assistent_api -[hidden]> movie_service
 redis -[hidden]> async_api
 async_api -[hidden]> elastic
 
 Rel(user, bob, "Voice question")
 Rel(user, alice, "Voice question")
 
-Rel(bob, assistent_api, "Command", "json")
-Rel(alice, assistent_api, "Command", "json")
+Rel(bob, assistent_api, "Request", "JSON")
+Rel(alice, assistent_api, "Request", "JSON")
 
-Rel(assistent_api, async_api, "Command", "json")
-Rel(async_api, assistent_api, "Answer", "json")
+Rel(assistent_api, async_api, "Request", "JSON")
+Rel(async_api, assistent_api, "Response", "JSON")
 
-Rel(async_api, elastic, "Responce")
+Rel(async_api, elastic, "Request")
 Rel(async_api, redis, "Set state")
 
-Rel(elastic, async_api, "Answer")
-Rel(redis, async_api, "Get state")
+Rel_L(elastic, async_api, "Response")
+Rel_L(redis, async_api, "Get state")
 
-Rel_L(assistent_api, bob, "Answer", "json")
-Rel_L(assistent_api, alice, "Answer", "json")
+Rel_L(assistent_api, bob, "Response", "JSON")
+Rel_L(assistent_api, alice, "Response", "JSON")
 
 Rel_L(bob, user, "Voice Answer")
 Rel_L(alice, user, "Voice answer")

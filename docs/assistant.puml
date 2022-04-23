@@ -1,0 +1,61 @@
+@startuml
+!include https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml
+!include <C4/C4_Container.puml>
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!define osaPuml https://raw.githubusercontent.com/Crashedmind/PlantUML-opensecurityarchitecture2-icons/master
+!include FONTAWESOME/users.puml
+
+title Assistant API
+
+'Добавляем теги для цветов контейнеров
+AddElementTag("bg_red", $bgColor="#fd6159")
+AddElementTag("bg_yellow", $bgColor="#fff384")
+AddElementTag("bg_green", $bgColor="#79cfb8")
+AddElementTag("font_black", $fontColor="#000000")
+AddElementTag("border_black", $borderColor="#000000")
+
+
+'Объявляем цвета
+!$COLOR_BLACK = "#000000"
+!$COLOR_REL_LINE = "#444444"
+!$COLOR_REL_TEXT = "#444444"
+
+'Меняем стиль линий
+UpdateRelStyle($lineColor=$COLOR_REL_LINE, $textColor=$COLOR_REL_TEXT)
+
+'Добавляем легенду
+LAYOUT_WITH_LEGEND()
+
+
+'Система локального распознавания и синтеза речи (Bob)
+Container(bob, "Bob Application", "Python", $tags="font_black+bg_yellow")
+
+'Навыки Алисы
+Container(alice, "Alice Skill", "API", $tags="font_black+bg_yellow")
+
+
+'Assistant API
+System_Boundary(assistant, "Assistant API") {
+    Container(core, "App", "Flask App, Config, Logging", $tags="font_black+bg_red+border_black")
+    Container(alice_api, "Alice", "API", $tags="font_black+bg_red+border_black")
+    Container(bob_api, "Bob", "API", $tags="font_black+bg_red+border_black")
+    Container(search, "Search Connector", "requests", $tags="font_black+bg_red+border_black")
+}
+'Async API
+Container(async_api, "Async API", "FastAPI", $tags="font_black+bg_green")
+
+Rel(bob, bob_api, "Request", "JSON")
+Rel(bob_api, bob, "Response", "JSON")
+Rel(alice, alice_api, "Request", "JSON")
+Rel(alice_api, alice, "Response", "JSON")
+Rel(search, async_api, "Request", "JSON")
+Rel(async_api, search, "Response", "JSON")
+
+alice_api <--> search
+bob_api <--> search
+
+alice_api .. core
+bob_api .. core
+search .. core
+
+@enduml
