@@ -7,7 +7,7 @@
 !include <office/Servers/application_server>
 !include <office/Servers/database_server>
 
-title Assistant API
+title Assistant API (Bob Schema)
 
 'Элемент пользователь
 Person(user, "User")
@@ -18,11 +18,8 @@ AddElementTag("bg_yellow", $bgColor="#fff384")
 AddElementTag("bg_green", $bgColor="#79cfb8")
 AddElementTag("bg_lime", $bgColor="#00ff00")
 AddElementTag("bg_purple", $bgColor="#800080")
-
-
 AddElementTag("font_black", $fontColor="#000000")
 AddElementTag("border_black", $borderColor="#000000")
-
 
 'Объявляем цвета
 !$COLOR_BLACK = "#000000"
@@ -56,29 +53,17 @@ Container(assistant, "Assistant API", "Flask", $tags="font_black+bg_red")
 Container(async_api, "Async API", "FastAPI", $tags="font_black+bg_red")
 
 
-'Rel(bob_api, bob, "Response", "JSON")
 Rel(alice, assistant, "Request", "JSON")
-'Rel(alice_api, alice, "Response", "JSON")
 Rel(assistant, async_api, "Request", "JSON")
-'Rel(user, recognizer, "Voice question")
-'Rel(recognizer, classifier, "text request")
 Rel(classifier, connector, "intent")
 Rel(async_api, assistant, "Response", "JSON")
 Rel(connector, assistant, "Request", "JSON")
-Rel(assistant, speech_synthesis, "Request", "JSON")
+Rel(assistant, speech_synthesis, "Response", "JSON")
 Rel(speech_synthesis, user, "play response", "Assistant Voice")
+Rel(user, google_recognizer, "Voice question", "User Voice")
+Rel(google_recognizer, classifier, "text request", "str")
 
-'Rel_L(bob, user, "Voice Answer")
-
-'Rel_L(offline_recognizer, google_recognizer, "play response", "Assistant Voice")
-user --> google_recognizer : Voice question
-google_recognizer --> classifier : text request
-offline_recognizer ..> classifier : text request
+offline_recognizer ..> classifier : text request\n[str]
 google_recognizer ..> offline_recognizer : If there is no internet
-'bob_api <--> search
-'
-'alice_api .. core
-'bob_api .. core
-'search .. core
 
 @enduml
