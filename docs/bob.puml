@@ -1,0 +1,69 @@
+@startuml
+!include https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml
+!include <C4/C4_Container.puml>
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!define osaPuml https://raw.githubusercontent.com/Crashedmind/PlantUML-opensecurityarchitecture2-icons/master
+!include FONTAWESOME/users.puml
+!include <office/Servers/application_server>
+!include <office/Servers/database_server>
+
+title Assistant API (Bob Schema)
+
+'Элемент пользователь
+Person(user, "User")
+
+'Добавляем теги для цветов контейнеров
+AddElementTag("bg_red", $bgColor="#fd6159")
+AddElementTag("bg_yellow", $bgColor="#fff384")
+AddElementTag("bg_green", $bgColor="#79cfb8")
+AddElementTag("bg_lime", $bgColor="#00ff00")
+AddElementTag("bg_purple", $bgColor="#800080")
+AddElementTag("font_black", $fontColor="#000000")
+AddElementTag("border_black", $borderColor="#000000")
+
+'Объявляем цвета
+!$COLOR_BLACK = "#000000"
+!$COLOR_REL_LINE = "#444444"
+!$COLOR_REL_TEXT = "#444444"
+
+'Меняем стиль линий
+UpdateRelStyle($lineColor=$COLOR_REL_LINE, $textColor=$COLOR_REL_TEXT)
+
+'Добавляем легенду
+LAYOUT_WITH_LEGEND()
+
+
+'Система локального распознавания и синтеза речи (Bob)
+System_Boundary(bob, "Bob Application", "Python") {
+    System_Boundary(recognizer, "Record and Recognize speech", "Python"){
+        Container(google_recognizer, "Google Recognize", "speech_recognition.Recognizer, speech_recognition.Microphone", $tags="font_black+bg_yellow+border_black")
+        Container(offline_recognizer, "Offline Recognize", "vosk.KaldiRecognizer", $tags="font_black+bg_yellow+border_black")
+    }
+    Container(classifier, "Classifier", "sklearn", "Determining user intent", $tags="font_black+bg_green+border_black")
+    Container(connector, "Connector", "python", $tags="font_black+bg_lime+border_black")
+    Container(speech_synthesis, "Speech synthesis", "pyttsx3", $tags="font_black+bg_purple+border_black")
+}
+'Навыки Алисы
+Container(alice, "Alice Skill", "API", $tags="font_black+bg_red")
+
+'Assistant API
+Container(assistant, "Assistant API", "Flask", $tags="font_black+bg_red")
+
+'Async API
+Container(async_api, "Async API", "FastAPI", $tags="font_black+bg_red")
+
+
+Rel(alice, assistant, "Request", "JSON")
+Rel(assistant, async_api, "Request", "JSON")
+Rel(classifier, connector, "intent")
+Rel(async_api, assistant, "Response", "JSON")
+Rel(connector, assistant, "Request", "JSON")
+Rel(assistant, speech_synthesis, "Response", "JSON")
+Rel(speech_synthesis, user, "play response", "Assistant Voice")
+Rel(user, google_recognizer, "Voice question", "User Voice")
+Rel(google_recognizer, classifier, "text request", "str")
+
+offline_recognizer ..> classifier : text request\n[str]
+google_recognizer ..> offline_recognizer : If there is no internet
+
+@enduml
