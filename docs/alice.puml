@@ -36,14 +36,16 @@ LAYOUT_WITH_LEGEND()
 System_Boundary(alice, "Alice Skill") {
     System_Boundary(dialogs, "Yandex.Dialogs"){
         Container(skill, "Yandex.Dialogs", "skill", $tags="font_black+bg_yellow+border_black")
+
         Container(intents, "Intents", "film, director, actor", $tags="font_black+bg_green+border_black")
         Container(entity, "Entity", "genres", $tags="font_black+bg_green+border_black")
+
         Container(state, "State", "film", $tags="font_black+bg_green+border_black")
     }
     Container(cloud, "Yandex.Cloud", "cloud function", $tags="font_black+bg_lime+border_black")
 }
 
-'Conntector to Async API
+'Connector to Async API
 Container(connector, "Assistant ApI", "Flask", $tags="font_black+bg_red")
 
 'Async API
@@ -55,7 +57,7 @@ Container(bob, "Bob", "offline voice assistant", $tags="font_black+bg_red")
 bob .. connector
 
 Rel(user, skill, "Request", "voice / text")
-skill <.. intents : intent
+skill <.. intents
 skill <.. entity
 skill <.. state
 
@@ -67,10 +69,7 @@ Rel(cloud, connector, "Response", "json")
 Rel(connector, async_api, "Response", "json")
 Rel(async_api, connector, "Request", "json")
 
-'Rel(assistant, async_api, "Request", "json")
-'Rel(async_api, assistant, "Response", "json")
-
-Rel(cloud, skill, "Response", "json")
+Rel(cloud, skill, "Response", "text, state")
 Rel(skill, user, "Response", "voice / text")
 
 @enduml
