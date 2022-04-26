@@ -36,30 +36,40 @@ LAYOUT_WITH_LEGEND()
 System_Boundary(alice, "Alice Skill") {
     System_Boundary(dialogs, "Yandex.Dialogs"){
         Container(skill, "Yandex.Dialogs", "skill", $tags="font_black+bg_yellow+border_black")
-        Container(intents, "Intents", "NLU", $tags="font_black+bg_green+border_black")
+
+        Container(intents, "Intents", "film, director, actor", $tags="font_black+bg_green+border_black")
         Container(entity, "Entity", "genres", $tags="font_black+bg_green+border_black")
-        Container(state, "State", "last requests", $tags="font_black+bg_green+border_black")
+
+        Container(state, "State", "film", $tags="font_black+bg_green+border_black")
     }
-    Container(cloud, "Yandex.Cloud", "cloud function", $tags="font_black+bg_green+border_black")
+    Container(cloud, "Yandex.Cloud", "cloud function", $tags="font_black+bg_lime+border_black")
 }
 
-'Conntector to Async API
-Container(connector, "Connector", "python class", $tags="font_black+bg_red")
+'Connector to Async API
+Container(connector, "Assistant ApI", "Flask", $tags="font_black+bg_red")
 
 'Async API
 Container(async_api, "Async API", "FastAPI", $tags="font_black+bg_red")
 
+'Bob
+Container(bob, "Bob", "offline voice assistant", $tags="font_black+bg_red")
+
+bob .. connector
+
 Rel(user, skill, "Request", "voice / text")
-skill <.. intents : intent
-intents <.. entity : genre
+skill <.. intents
+skill <.. entity
 skill <.. state
 
 Rel(skill, cloud, "Request", "event, context")
-cloud .. connector
-Rel(connector, async_api, "Request", "json")
-Rel(async_api, connector, "Response", "json")
 
-Rel(cloud, skill, "Response", "json")
+Rel(connector, cloud, "Request", "json")
+Rel(cloud, connector, "Response", "json")
+
+Rel(connector, async_api, "Response", "json")
+Rel(async_api, connector, "Request", "json")
+
+Rel(cloud, skill, "Response", "text, state")
 Rel(skill, user, "Response", "voice / text")
 
 @enduml
