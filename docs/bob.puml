@@ -42,6 +42,7 @@ System_Boundary(bob, "Bob Application", "Python") {
     Container(classifier, "Classifier", "sklearn", "Determining user intent", $tags="font_black+bg_green+border_black")
     Container(connector, "Connector", "python", $tags="font_black+bg_lime+border_black")
     Container(speech_synthesis, "Speech synthesis", "pyttsx3", $tags="font_black+bg_purple+border_black")
+    Container(context, "Filmwork Context", "Python class", $tags="font_black+bg_red+border_black")
 }
 'Навыки Алисы
 Container(alice, "Alice Skill", "API", $tags="font_black+bg_red")
@@ -54,15 +55,15 @@ Container(async_api, "Async API", "FastAPI", $tags="font_black+bg_red")
 
 
 Rel(alice, assistant, "Request", "JSON")
-Rel(assistant, async_api, "Request", "JSON")
-Rel(classifier, connector, "intent")
-Rel(async_api, assistant, "Response", "JSON")
+Rel_L(assistant, async_api, "Request", "JSON")
+Rel_L(classifier, connector, "intent")
+Rel_L(async_api, assistant, "Response", "JSON")
 Rel(connector, assistant, "Request", "JSON")
-Rel(assistant, speech_synthesis, "Response", "JSON")
-Rel(speech_synthesis, user, "play response", "Assistant Voice")
+Rel_L(assistant, speech_synthesis, "Response", "JSON")
+Rel_L(speech_synthesis, user, "play response", "Assistant Voice")
 Rel(user, google_recognizer, "Voice question", "User Voice")
-Rel(google_recognizer, classifier, "text request", "str")
-
+Rel_L(google_recognizer, classifier, "text request", "str")
+connector <..> context : set/get filmwork name
 offline_recognizer ..> classifier : text request\n[str]
 google_recognizer ..> offline_recognizer : If there is no internet
 
