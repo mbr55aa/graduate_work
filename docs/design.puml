@@ -51,6 +51,7 @@ System_Boundary(movie_service, "Movie Service") {
     Container(async_api, "Async API", "Python, FastAPI", $tags="font_black+bg_green+border_black+webApp")
     ContainerDb(elastic, "DB ES", "ElasticSearch", $tags="font_black+bg_green+border_black+db")
     ContainerDb(redis, "DB Redis", "Redis", $tags="font_black+bg_green+border_black+db")
+    Container(admin, "Admin Panel", "Django, PostgreSQL", $tags="font_black+bg_green+border_black+db")
 }
 
 redis -[hidden]> async_api
@@ -76,4 +77,6 @@ Rel_L(assistent_api, alice, "Response", "JSON")
 
 Rel_L(bob, user, "Voice Answer")
 Rel_L(alice, user, "Voice answer")
+
+Rel_L(admin, elastic, "ETL")
 @enduml
